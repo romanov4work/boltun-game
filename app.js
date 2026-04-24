@@ -181,15 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setupControls();
 });
 
-// Скрываем спиннер после полной загрузки всех ресурсов
-window.addEventListener('load', () => {
-    const spinner = document.getElementById('loading-spinner');
-    if (spinner) {
-        spinner.classList.add('hidden');
-        setTimeout(() => spinner.remove(), 500);
-    }
-});
-
 // Обновление UI дерева
 function updateTreeUI() {
     // Обновляем счетчики прогресса для каждого упражнения
