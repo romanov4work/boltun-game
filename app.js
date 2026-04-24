@@ -314,9 +314,19 @@ function initSpeechRecognition() {
 function setupEventListeners() {
     console.log('Setting up event listeners...');
 
-    // Кнопки выбора упражнений на дереве - убираем раскрытие
+    // Кнопки выбора упражнений на дереве - клик запускает первый урок
     const exerciseCards = document.querySelectorAll('.tree-exercise-card');
     console.log('Found exercise cards:', exerciseCards.length);
+
+    exerciseCards.forEach(card => {
+        const exerciseId = card.dataset.exercise;
+        if (exerciseId) {
+            card.addEventListener('click', () => {
+                console.log('Card clicked:', exerciseId);
+                startExercise(exerciseId, 0);
+            });
+        }
+    });
 
     // Специальная кнопка для озвучки мультфильма
     const cartoonBtn = document.getElementById('cartoon-voiceover-btn');
