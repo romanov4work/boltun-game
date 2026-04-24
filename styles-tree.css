@@ -30,25 +30,7 @@
     font-weight: 900;
     color: white;
     text-align: center;
-    flex: 1;
-}
-
-.special-exercise-btn {
-    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-    color: white;
-    border: 3px solid white;
-    border-radius: 50px;
-    padding: 12px 24px;
-    font-size: 18px;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
-    transition: all 0.3s ease;
-}
-
-.special-exercise-btn:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+    margin: 0;
 }
 
 /* Контейнер дерева */
