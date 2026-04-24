@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styles-onboarding.css">
     <link rel="stylesheet" href="styles-exercises.css">
-    <link rel="stylesheet" href="styles-levels.css">
+    <link rel="stylesheet" href="styles-tree.css">
 </head>
 <body>
     <!-- Онбординг -->
@@ -53,92 +53,129 @@
         <span class="score-value" id="score">0</span>
     </div>
 
-    <!-- Экран выбора уровней -->
-    <div class="levels-screen" id="menu-screen">
-        <div class="levels-header">
-            <h1>🎤 Болтун</h1>
-            <p class="subtitle">Развивай дикцию играя!</p>
+    <!-- Экран дерева прогресса -->
+    <div class="tree-screen" id="menu-screen">
+        <div class="tree-header">
+            <h1 class="tree-title">🎤 Болтун</h1>
+            <button class="special-exercise-btn" id="cartoon-voiceover-btn">
+                🎬 Озвучка мультфильма
+            </button>
         </div>
 
-        <div class="progress-bar-container">
-            <div class="progress-bar">
-                <div class="progress-fill" id="level-progress"></div>
-            </div>
-            <p class="progress-text" id="progress-text">Уровень 1: Основы</p>
-        </div>
+        <div class="tree-container">
+            <div class="tree-trunk"></div>
 
-        <div class="levels-container">
-            <!-- Уровень 1: Основы -->
-            <div class="level-card unlocked" id="level-1">
-                <div class="level-header">
-                    <span class="level-number">1</span>
-                    <h2>Основы</h2>
-                </div>
-                <div class="exercises-grid">
-                    <button class="exercise-btn" data-exercise="tongue-twisters">
-                        <span class="exercise-icon">🗣️</span>
-                        <span class="exercise-name">Скороговорки</span>
-                    </button>
-                    <button class="exercise-btn" data-exercise="sounds">
-                        <span class="exercise-icon">🔤</span>
-                        <span class="exercise-name">Звуки</span>
-                    </button>
-                    <button class="exercise-btn" data-exercise="breathing">
-                        <span class="exercise-icon">💨</span>
-                        <span class="exercise-name">Дыхание</span>
-                    </button>
+            <!-- Уровень 3: Мастерство (верх дерева) -->
+
+            <!-- Узел 9: Пересказ -->
+            <div class="tree-node">
+                <div class="tree-branch"></div>
+                <div class="tree-leaves">🍃🍃</div>
+                <div class="tree-exercise-card locked" data-exercise="retelling">
+                    <div class="tree-exercise-status">🔒</div>
+                    <div class="tree-exercise-icon">📖</div>
+                    <div class="tree-exercise-name">Пересказ</div>
+                    <div class="tree-exercise-progress" id="progress-retelling">0/10</div>
                 </div>
             </div>
 
-            <!-- Уровень 2: Выразительность -->
-            <div class="level-card locked" id="level-2">
-                <div class="level-header">
-                    <span class="level-number">2</span>
-                    <h2>Выразительность</h2>
-                    <span class="lock-icon">🔒</span>
-                </div>
-                <p class="unlock-text">Набери 300 баллов</p>
-                <div class="exercises-grid">
-                    <button class="exercise-btn" data-exercise="emotions">
-                        <span class="exercise-icon">🎭</span>
-                        <span class="exercise-name">Эмоции</span>
-                    </button>
-                    <button class="exercise-btn" data-exercise="speed-reading">
-                        <span class="exercise-icon">⚡</span>
-                        <span class="exercise-name">Темп речи</span>
-                    </button>
-                    <button class="exercise-btn" data-exercise="hard-words">
-                        <span class="exercise-icon">📚</span>
-                        <span class="exercise-name">Сложные слова</span>
-                    </button>
+            <!-- Узел 8: С препятствиями -->
+            <div class="tree-node">
+                <div class="tree-branch"></div>
+                <div class="tree-leaves">🍃🍃</div>
+                <div class="tree-exercise-card locked" data-exercise="pencil-challenge">
+                    <div class="tree-exercise-status">🔒</div>
+                    <div class="tree-exercise-icon">🖊️</div>
+                    <div class="tree-exercise-name">С препятствиями</div>
+                    <div class="tree-exercise-progress" id="progress-pencil-challenge">0/15</div>
                 </div>
             </div>
 
-            <!-- Уровень 3: Мастерство -->
-            <div class="level-card locked" id="level-3">
-                <div class="level-header">
-                    <span class="level-number">3</span>
-                    <h2>Мастерство</h2>
-                    <span class="lock-icon">🔒</span>
+            <!-- Узел 7: Артикуляция -->
+            <div class="tree-node">
+                <div class="tree-branch"></div>
+                <div class="tree-leaves">🍃🍃🍃</div>
+                <div class="tree-exercise-card locked" data-exercise="articulation">
+                    <div class="tree-exercise-status">🔒</div>
+                    <div class="tree-exercise-icon">👅</div>
+                    <div class="tree-exercise-name">Артикуляция</div>
+                    <div class="tree-exercise-progress" id="progress-articulation">0/6</div>
                 </div>
-                <p class="unlock-text">Набери 700 баллов</p>
-                <div class="exercises-grid">
-                    <button class="exercise-btn" data-exercise="articulation">
-                        <span class="exercise-icon">👅</span>
-                        <span class="exercise-name">Артикуляция</span>
-                    </button>
-                    <button class="exercise-btn" data-exercise="pencil-challenge">
-                        <span class="exercise-icon">🖊️</span>
-                        <span class="exercise-name">С препятствиями</span>
-                    </button>
-                    <button class="exercise-btn" data-exercise="cartoon-voiceover">
-                        <span class="exercise-icon">🎬</span>
-                        <span class="exercise-name">Озвучка</span>
-                    </button>
-                    <button class="exercise-btn" data-exercise="retelling">
-                        <span class="exercise-icon">📖</span>
-                        <span class="exercise-name">Пересказ</span>
-                    </button>
+            </div>
+
+            <!-- Уровень 2: Выразительность (середина дерева) -->
+
+            <!-- Узел 6: Сложные слова -->
+            <div class="tree-node">
+                <div class="tree-branch"></div>
+                <div class="tree-leaves">🍃🍃</div>
+                <div class="tree-exercise-card locked" data-exercise="hard-words">
+                    <div class="tree-exercise-status">🔒</div>
+                    <div class="tree-exercise-icon">📚</div>
+                    <div class="tree-exercise-name">Сложные слова</div>
+                    <div class="tree-exercise-progress" id="progress-hard-words">0/20</div>
+                </div>
+            </div>
+
+            <!-- Узел 5: Темп речи -->
+            <div class="tree-node">
+                <div class="tree-branch"></div>
+                <div class="tree-leaves">🍃🍃</div>
+                <div class="tree-exercise-card locked" data-exercise="speed-reading">
+                    <div class="tree-exercise-status">🔒</div>
+                    <div class="tree-exercise-icon">⚡</div>
+                    <div class="tree-exercise-name">Темп речи</div>
+                    <div class="tree-exercise-progress" id="progress-speed-reading">0/30</div>
+                </div>
+            </div>
+
+            <!-- Узел 4: Эмоции -->
+            <div class="tree-node">
+                <div class="tree-branch"></div>
+                <div class="tree-leaves">🍃🍃🍃</div>
+                <div class="tree-exercise-card locked" data-exercise="emotions">
+                    <div class="tree-exercise-status">🔒</div>
+                    <div class="tree-exercise-icon">🎭</div>
+                    <div class="tree-exercise-name">Эмоции</div>
+                    <div class="tree-exercise-progress" id="progress-emotions">0/15</div>
+                </div>
+            </div>
+
+            <!-- Уровень 1: Основы (низ дерева - начало) -->
+
+            <!-- Узел 3: Дыхание -->
+            <div class="tree-node">
+                <div class="tree-branch"></div>
+                <div class="tree-leaves">🍃🍃</div>
+                <div class="tree-exercise-card locked" data-exercise="breathing">
+                    <div class="tree-exercise-status">🔒</div>
+                    <div class="tree-exercise-icon">💨</div>
+                    <div class="tree-exercise-name">Дыхание</div>
+                    <div class="tree-exercise-progress" id="progress-breathing">0/5</div>
+                </div>
+            </div>
+
+            <!-- Узел 2: Звуки -->
+            <div class="tree-node">
+                <div class="tree-branch"></div>
+                <div class="tree-leaves">🍃🍃</div>
+                <div class="tree-exercise-card locked" data-exercise="sounds">
+                    <div class="tree-exercise-status">🔒</div>
+                    <div class="tree-exercise-icon">🔤</div>
+                    <div class="tree-exercise-name">Звуки</div>
+                    <div class="tree-exercise-progress" id="progress-sounds">0/80</div>
+                </div>
+            </div>
+
+            <!-- Узел 1: Скороговорки (СТАРТ - самый низ) -->
+            <div class="tree-node">
+                <div class="tree-branch"></div>
+                <div class="tree-leaves">🍃🍃🍃</div>
+                <div class="tree-exercise-card" data-exercise="tongue-twisters">
+                    <div class="tree-exercise-status">🎯</div>
+                    <div class="tree-exercise-icon">🗣️</div>
+                    <div class="tree-exercise-name">Скороговорки</div>
+                    <div class="tree-exercise-progress" id="progress-tongue-twisters">0/20</div>
                 </div>
             </div>
         </div>

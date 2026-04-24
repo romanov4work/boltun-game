@@ -96,78 +96,95 @@ const tongueTwisters = [
     { text: "Король-орел, орел-король", target: 2.5, difficulty: 1 }
 ];
 
+// Порядок упражнений в дереве (снизу вверх - последовательное открытие)
+const treeExercises = [
+    'tongue-twisters',  // 1. Старт (низ дерева)
+    'sounds',           // 2. Основы
+    'breathing',        // 3. Основы
+    'emotions',         // 4. Выразительность
+    'speed-reading',    // 5. Выразительность
+    'hard-words',       // 6. Выразительность
+    'articulation',     // 7. Мастерство
+    'pencil-challenge', // 8. Мастерство
+    'retelling'         // 9. Вершина дерева
+];
+
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
     loadProgress();
     setupEventListeners();
     updateScore();
-    updateLevelsUI();
+    updateTreeUI();
     setupOnboarding();
     setupControls();
 });
 
-// Обновление UI уровней
-function updateLevelsUI() {
-    // Обновляем прогресс бар
-    const progress = getProgressToNextLevel();
-    const progressFill = document.getElementById('level-progress');
-    if (progressFill) {
-        progressFill.style.width = progress + '%';
-    }
-
-    const currentLevel = getCurrentLevel();
-    const progressText = document.getElementById('progress-text');
-    if (progressText) {
-        progressText.textContent = `Уровень ${currentLevel.id}: ${currentLevel.name}`;
-    }
-
-    // Обновляем доступность уровней
-    levels.forEach(level => {
-        const levelCard = document.getElementById(`level-${level.id}`);
-        if (levelCard) {
-            if (isLevelUnlocked(level.id)) {
-                levelCard.classList.remove('locked');
-                levelCard.classList.add('unlocked');
-            } else {
-                levelCard.classList.add('locked');
-                levelCard.classList.remove('unlocked');
-            }
+// Обновление UI дерева
+function updateTreeUI() {
+    // Обновляем счетчики прогресса для каждого упражнения
+    Object.keys(exerciseProgress).forEach(exerciseId => {
+        const progressEl = document.getElementById(`progress-${exerciseId}`);
+        if (progressEl) {
+            const total = getExerciseTotal(exerciseId);
+            progressEl.textContent = `${exerciseProgress[exerciseId]}/${total}`;
         }
     });
 
-    // Обновляем счетчики заданий
-    updateExerciseCounters();
+    // Определяем какие упражнения разблокированы
+    treeExercises.forEach((exerciseId, index) => {
+        const card = document.querySelector(`[data-exercise="${exerciseId}"]`);
+        if (!card) return;
+
+        const isUnlocked = isExerciseUnlocked(exerciseId, index);
+        const isCompleted = isExerciseCompleted(exerciseId);
+
+        if (isCompleted) {
+            card.classList.remove('locked');
+            card.classList.add('completed');
+            const status = card.querySelector('.tree-exercise-status');
+            if (status) status.textContent = '✓';
+        } else if (isUnlocked) {
+            card.classList.remove('locked');
+            card.classList.remove('completed');
+            const status = card.querySelector('.tree-exercise-status');
+            if (status) status.textContent = '🎯';
+        } else {
+            card.classList.add('locked');
+            card.classList.remove('completed');
+            const status = card.querySelector('.tree-exercise-status');
+            if (status) status.textContent = '🔒';
+        }
+    });
 }
 
-// Обновление счетчиков выполненных заданий
-function updateExerciseCounters() {
-    Object.keys(exerciseProgress).forEach(exerciseId => {
-        const btn = document.querySelector(`[data-exercise="${exerciseId}"]`);
-        if (btn) {
-            let counter = btn.querySelector('.exercise-counter');
-            if (!counter) {
-                counter = document.createElement('div');
-                counter.className = 'exercise-counter';
-                btn.appendChild(counter);
-            }
-            const total = getExerciseTotal(exerciseId);
-            counter.textContent = `${exerciseProgress[exerciseId]}/${total}`;
-        }
-    });
+// Проверка разблокировано ли упражнение
+function isExerciseUnlocked(exerciseId, index) {
+    // Первое упражнение всегда открыто
+    if (index === 0) return true;
+
+    // Остальные открываются после завершения предыдущего
+    const prevExerciseId = treeExercises[index - 1];
+    return isExerciseCompleted(prevExerciseId);
+}
+
+// Проверка завершено ли упражнение
+function isExerciseCompleted(exerciseId) {
+    const total = getExerciseTotal(exerciseId);
+    return exerciseProgress[exerciseId] >= total;
 }
 
 // Получить общее количество заданий в упражнении
 function getExerciseTotal(exerciseId) {
     const totals = {
         'tongue-twisters': 20,
-        'sounds': 40,
+        'sounds': 80,
         'breathing': 5,
         'emotions': 15,
-        'speed-reading': 15,
+        'speed-reading': 30,
         'hard-words': 20,
-        'articulation': 10,
+        'articulation': 6,
         'pencil-challenge': 15,
-        'cartoon-voiceover': 10,
+        'cartoon-voiceover': 3,
         'retelling': 10
     };
     return totals[exerciseId] || 10;
@@ -178,7 +195,7 @@ function incrementExerciseProgress(exerciseId) {
     if (exerciseProgress[exerciseId] !== undefined) {
         exerciseProgress[exerciseId]++;
         saveProgress();
-        updateExerciseCounters();
+        updateTreeUI();
     }
 }
 
@@ -212,13 +229,28 @@ function initSpeechRecognition() {
 
 // Настройка обработчиков событий
 function setupEventListeners() {
-    // Кнопки выбора упражнений
-    document.querySelectorAll('.exercise-btn').forEach(button => {
+    // Кнопки выбора упражнений на дереве
+    document.querySelectorAll('.tree-exercise-card').forEach(button => {
         button.addEventListener('click', (e) => {
             const exercise = e.currentTarget.dataset.exercise;
-            startExercise(exercise);
+            const index = treeExercises.indexOf(exercise);
+
+            // Проверяем разблокировано ли упражнение
+            if (isExerciseUnlocked(exercise, index)) {
+                startExercise(exercise);
+            } else {
+                alert('Сначала нужно завершить предыдущее упражнение! 🌟');
+            }
         });
     });
+
+    // Специальная кнопка для озвучки мультфильма
+    const cartoonBtn = document.getElementById('cartoon-voiceover-btn');
+    if (cartoonBtn) {
+        cartoonBtn.addEventListener('click', () => {
+            startExercise('cartoon-voiceover');
+        });
+    }
 
     // Кнопки "Назад"
     document.getElementById('back-to-menu').addEventListener('click', () => showScreen('menu-screen'));
@@ -500,7 +532,7 @@ function nextTwister() {
 // Обновление счета
 function updateScore() {
     document.getElementById('score').textContent = score;
-    updateLevelsUI();
+    updateTreeUI();
 }
 
 // Онбординг
