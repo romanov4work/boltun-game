@@ -97,7 +97,7 @@
 
 /* Контейнер дерева */
 .tree-container {
-    max-width: 800px;
+    max-width: 100%;
     margin: 0 auto;
     position: relative;
     padding: 40px 20px;
@@ -105,6 +105,8 @@
     flex-direction: column;
     gap: 20px;
     min-height: auto;
+    overflow-x: auto;
+    overflow-y: visible;
 }
 
 /* Главный заголовок "Дикция" */
@@ -217,10 +219,40 @@
 .tree-node {
     position: relative;
     margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: inline-block;
+    vertical-align: top;
     z-index: 10;
+    min-width: 300px;
+}
+
+/* Все узлы в одну линию */
+.tree-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 20px;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding: 40px 20px;
+    scroll-behavior: smooth;
+}
+
+.tree-container::-webkit-scrollbar {
+    height: 12px;
+}
+
+.tree-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.tree-container::-webkit-scrollbar-thumb {
+    background: rgba(91, 79, 232, 0.5);
+    border-radius: 10px;
+}
+
+.tree-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(91, 79, 232, 0.8);
 }
 
 /* Ветка - скрываем */
@@ -235,11 +267,11 @@
 
 /* Карточка упражнения - простая кнопка */
 .tree-exercise-card {
-    width: 100%;
-    max-width: 600px;
+    width: 280px;
+    min-width: 280px;
     background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
     border-radius: 20px;
-    padding: 20px 30px;
+    padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     transition: all 0.3s ease;
@@ -247,40 +279,35 @@
     position: relative;
     z-index: 10;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 20px;
-}
-
-/* Сетка уроков внутри модуля */
-.lessons-grid {
-    display: none;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 12px;
-    margin-top: 12px;
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 12px;
 }
 
-.tree-exercise-card.expanded .lessons-grid {
+/* Сетка уроков внутри модуля - показываем всегда */
+.lessons-grid {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+    width: 100%;
 }
 
 .lesson-tile {
     background: white;
     border: 2px solid #E0E0E0;
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: 8px;
+    padding: 8px;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     color: #333;
 }
 
 .lesson-tile:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border-color: #4CAF50;
 }
@@ -291,10 +318,10 @@
 }
 
 .lesson-tile .lesson-number {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 900;
     color: #5B4FE8;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 /* Разные цвета для каждого модуля */
@@ -356,23 +383,21 @@
 
 /* Название упражнения */
 .tree-exercise-name {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 800;
     color: #5B4FE8;
-    flex: 1;
-    text-align: left;
+    text-align: center;
 }
 
 /* Прогресс упражнения */
 .tree-exercise-progress {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
     color: #FF6B6B;
     background: white;
-    padding: 8px 16px;
+    padding: 6px 12px;
     border-radius: 12px;
     border: 2px solid #FF6B6B;
-    flex-shrink: 0;
 }
 
 /* Статус упражнения */
