@@ -65,28 +65,33 @@
         </button>
 
         <button class="character-button character-3" data-exercise="sound-r">
-            <div class="character-sprite" style="background-image: url('assets/characters/feya.png');"></div>
+            <div class="character-sprite" style="background-image: url('assets/characters/character3.png');"></div>
             <div class="character-label">Звук Р</div>
         </button>
 
         <button class="character-button character-4" data-exercise="breathing">
-            <div class="character-sprite" style="background-image: url('assets/characters/character2.png');"></div>
+            <div class="character-sprite" style="background-image: url('assets/characters/feya.png');"></div>
             <div class="character-label">Дыхание</div>
         </button>
 
         <button class="character-button character-5" data-exercise="pencil-challenge">
-            <div class="character-sprite" style="background-image: url('assets/characters/feya.png');"></div>
+            <div class="character-sprite" style="background-image: url('assets/characters/character2.png');"></div>
             <div class="character-label">С карандашом</div>
         </button>
 
         <button class="character-button character-6" data-exercise="hard-words">
-            <div class="character-sprite" style="background-image: url('assets/characters/character2.png');"></div>
+            <div class="character-sprite" style="background-image: url('assets/characters/character3.png');"></div>
             <div class="character-label">Сложные слова</div>
         </button>
 
         <button class="character-button character-7" data-exercise="articulation">
             <div class="character-sprite" style="background-image: url('assets/characters/feya.png');"></div>
             <div class="character-label">Артикуляция</div>
+        </button>
+
+        <button class="character-button character-8" data-exercise="cartoon-voiceover">
+            <div class="character-sprite" style="background-image: url('assets/characters/character2.png');"></div>
+            <div class="character-label">Озвучка мультика</div>
         </button>
     </div>
 
@@ -400,6 +405,52 @@
                     </div>
                     <button class="btn btn-primary" id="repeat-articulation">
                         Повторить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран "Озвучка мультфильма" -->
+    <div class="exercise-screen hidden" id="cartoon-voiceover-screen">
+        <button class="back-btn" id="back-to-menu-cartoon">← Назад в парк</button>
+        <div class="exercise-container">
+            <div class="exercise-content">
+                <div class="character-container">
+                    <div class="character" id="character-cartoon"></div>
+                </div>
+
+                <div class="task-card">
+                    <h3>🎬 Озвучь мультфильм!</h3>
+                    <div class="cartoon-scene">
+                        <h4 id="cartoon-title"></h4>
+                        <p class="cartoon-text" id="cartoon-text"></p>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-primary" id="play-cartoon">
+                        🎬 Посмотреть сцену
+                    </button>
+                    <button class="btn btn-secondary hidden" id="record-voiceover">
+                        🎤 Записать озвучку
+                    </button>
+                    <button class="btn btn-secondary hidden" id="play-my-voice">
+                        ▶️ Послушать мою озвучку
+                    </button>
+                </div>
+
+                <div class="result-panel hidden" id="result-panel-cartoon">
+                    <h3 id="result-title-cartoon"></h3>
+                    <p id="result-message-cartoon"></p>
+                    <div class="result-stats">
+                        <div class="stat">
+                            <span class="stat-label">Баллы:</span>
+                            <span class="stat-value" id="earned-points-cartoon"></span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="next-cartoon">
+                        Следующая сцена
                     </button>
                 </div>
             </div>

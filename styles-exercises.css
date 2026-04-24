@@ -165,3 +165,47 @@
         padding: 10px 24px;
     }
 }
+
+/* Озвучка мультфильма */
+.cartoon-scene {
+    background: linear-gradient(135deg, #FFF9F0 0%, #F0F4FF 100%);
+    padding: 32px;
+    border-radius: 24px;
+    margin: 24px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cartoon-scene h4 {
+    font-size: 24px;
+    color: #7B68EE;
+    margin-bottom: 16px;
+    font-weight: 700;
+}
+
+.cartoon-text {
+    font-size: 22px;
+    color: #2D3748;
+    line-height: 1.6;
+    font-weight: 600;
+    text-align: center;
+}
+
+.instruction-text {
+    font-size: 16px;
+    color: #666;
+    margin: 16px 0;
+    text-align: center;
+}
+
+.hard-word-text {
+    font-size: 36px;
+    font-weight: 700;
+    color: #7B68EE;
+    margin: 24px 0;
+}
+
+.word-hint {
+    font-size: 20px;
+    color: #999;
+    font-style: italic;
+}

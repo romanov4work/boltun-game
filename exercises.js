@@ -376,3 +376,127 @@ function startArticulation() {
 function repeatArticulation() {
     resetArticulation();
 }
+
+// === УПРАЖНЕНИЕ "ОЗВУЧКА МУЛЬТФИЛЬМА" ===
+
+const cartoonScenes = [
+    {
+        title: "Колобок убегает",
+        text: "Я Колобок, Колобок! По амбару метён, по сусекам скребён!",
+        duration: 3000
+    },
+    {
+        title: "Три медведя",
+        text: "Кто сидел на моём стуле и сломал его?",
+        duration: 2500
+    },
+    {
+        title: "Репка",
+        text: "Тянут-потянут, вытянуть не могут!",
+        duration: 2000
+    }
+];
+
+let currentCartoonIndex = 0;
+let userRecording = null;
+let mediaRecorder = null;
+let audioChunks = [];
+
+function loadCartoonScene() {
+    const scene = cartoonScenes[currentCartoonIndex];
+    document.getElementById('cartoon-title').textContent = scene.title;
+    document.getElementById('cartoon-text').textContent = scene.text;
+    document.getElementById('result-panel-cartoon').classList.add('hidden');
+    document.getElementById('play-cartoon').classList.remove('hidden');
+    document.getElementById('record-voiceover').classList.add('hidden');
+    document.getElementById('play-my-voice').classList.add('hidden');
+
+    const character = document.getElementById('character-cartoon');
+    character.style.backgroundImage = "url('assets/characters/feya.png')";
+}
+
+async function playCartoonWithSound() {
+    const scene = cartoonScenes[currentCartoonIndex];
+    const playBtn = document.getElementById('play-cartoon');
+    playBtn.disabled = true;
+    playBtn.textContent = '🎬 Играет...';
+
+    // Используем Speech Synthesis API для озвучки
+    const utterance = new SpeechSynthesisUtterance(scene.text);
+    utterance.lang = 'ru-RU';
+    utterance.rate = 0.9;
+
+    utterance.onend = () => {
+        playBtn.disabled = false;
+        playBtn.textContent = '🎬 Посмотреть снова';
+        document.getElementById('record-voiceover').classList.remove('hidden');
+    };
+
+    window.speechSynthesis.speak(utterance);
+}
+
+async function startVoiceoverRecording() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioChunks = [];
+
+        mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.ondataavailable = (event) => {
+            audioChunks.push(event.data);
+        };
+
+        mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            userRecording = URL.createObjectURL(audioBlob);
+            document.getElementById('play-my-voice').classList.remove('hidden');
+            document.getElementById('record-voiceover').classList.remove('hidden');
+            document.getElementById('record-voiceover').textContent = '🎤 Записать заново';
+
+            // Показываем результат
+            score += 100;
+            updateScore();
+            document.getElementById('result-title-cartoon').textContent = '🎬 Отлично!';
+            document.getElementById('result-message-cartoon').textContent = 'Ты озвучил сцену! Послушай свою запись.';
+            document.getElementById('earned-points-cartoon').textContent = '+100';
+            document.getElementById('result-panel-cartoon').classList.remove('hidden');
+        };
+
+        mediaRecorder.start();
+        document.getElementById('record-voiceover').textContent = '⏹️ Остановить запись';
+        document.getElementById('record-voiceover').onclick = stopVoiceoverRecording;
+
+    } catch (error) {
+        alert('Не удалось получить доступ к микрофону');
+    }
+}
+
+function stopVoiceoverRecording() {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        mediaRecorder.stream.getTracks().forEach(track => track.stop());
+        document.getElementById('record-voiceover').onclick = startVoiceoverRecording;
+    }
+}
+
+function playMyVoiceover() {
+    if (userRecording) {
+        const audio = new Audio(userRecording);
+        audio.play();
+    }
+}
+
+function nextCartoonScene() {
+    currentCartoonIndex++;
+    if (currentCartoonIndex >= cartoonScenes.length) {
+        currentCartoonIndex = 0;
+    }
+    userRecording = null;
+    loadCartoonScene();
+}
+
+function resetCartoon() {
+    currentCartoonIndex = 0;
+    userRecording = null;
+    loadCartoonScene();
+}

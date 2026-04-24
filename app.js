@@ -93,6 +93,7 @@ function setupEventListeners() {
     document.getElementById('back-to-menu-pencil').addEventListener('click', () => showScreen('menu-screen'));
     document.getElementById('back-to-menu-words').addEventListener('click', () => showScreen('menu-screen'));
     document.getElementById('back-to-menu-articulation').addEventListener('click', () => showScreen('menu-screen'));
+    document.getElementById('back-to-menu-cartoon').addEventListener('click', () => showScreen('menu-screen'));
 
     // Скороговорки
     document.getElementById('start-recording').addEventListener('click', startRecording);
@@ -126,6 +127,12 @@ function setupEventListeners() {
     // Артикуляция
     document.getElementById('start-articulation').addEventListener('click', startArticulation);
     document.getElementById('repeat-articulation').addEventListener('click', repeatArticulation);
+
+    // Озвучка мультфильма
+    document.getElementById('play-cartoon').addEventListener('click', playCartoonWithSound);
+    document.getElementById('record-voiceover').addEventListener('click', startVoiceoverRecording);
+    document.getElementById('play-my-voice').addEventListener('click', playMyVoiceover);
+    document.getElementById('next-cartoon').addEventListener('click', nextCartoonScene);
 }
 
 // Переключение экранов
@@ -138,6 +145,7 @@ function showScreen(screenId) {
     document.getElementById('pencil-challenge-screen').classList.toggle('hidden', screenId !== 'pencil-challenge-screen');
     document.getElementById('hard-words-screen').classList.toggle('hidden', screenId !== 'hard-words-screen');
     document.getElementById('articulation-screen').classList.toggle('hidden', screenId !== 'articulation-screen');
+    document.getElementById('cartoon-voiceover-screen').classList.toggle('hidden', screenId !== 'cartoon-voiceover-screen');
 }
 
 // Запуск упражнения
@@ -170,6 +178,9 @@ function startExercise(exerciseType) {
     } else if (exerciseType === 'articulation') {
         showScreen('articulation-screen');
         resetArticulation();
+    } else if (exerciseType === 'cartoon-voiceover') {
+        showScreen('cartoon-voiceover-screen');
+        resetCartoon();
     } else {
         alert('Это упражнение скоро будет доступно!');
     }
