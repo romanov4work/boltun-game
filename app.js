@@ -173,21 +173,21 @@ const treeExercises = [
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
-    // Скрываем спиннер после загрузки
-    setTimeout(() => {
-        const spinner = document.getElementById('loading-spinner');
-        if (spinner) {
-            spinner.classList.add('hidden');
-            setTimeout(() => spinner.remove(), 500);
-        }
-    }, 500);
-
     loadProgress();
     setupEventListeners();
     updateScore();
     updateTreeUI();
     setupOnboarding();
     setupControls();
+});
+
+// Скрываем спиннер после полной загрузки всех ресурсов
+window.addEventListener('load', () => {
+    const spinner = document.getElementById('loading-spinner');
+    if (spinner) {
+        spinner.classList.add('hidden');
+        setTimeout(() => spinner.remove(), 500);
+    }
 });
 
 // Обновление UI дерева
