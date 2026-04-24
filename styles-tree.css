@@ -21,6 +21,7 @@
     animation: cloudFloat3 50s ease-in-out infinite;
     opacity: 0.75;
     z-index: 0;
+    pointer-events: none;
 }
 
 @keyframes cloudFloat3 {
@@ -37,6 +38,7 @@
     animation: cloudFloat4 60s ease-in-out infinite;
     opacity: 0.7;
     z-index: 0;
+    pointer-events: none;
 }
 
 @keyframes cloudFloat4 {
@@ -54,6 +56,7 @@
     animation: cloudFloat5 40s ease-in-out infinite;
     opacity: 0.65;
     z-index: 0;
+    pointer-events: none;
 }
 
 @keyframes cloudFloat5 {
@@ -70,6 +73,7 @@
     animation: cloudFloat6 48s ease-in-out infinite;
     opacity: 0.7;
     z-index: 0;
+    pointer-events: none;
 }
 
 @keyframes cloudFloat6 {
