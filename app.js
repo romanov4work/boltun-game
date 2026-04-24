@@ -103,12 +103,14 @@ function showMotivation() {
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, initializing...');
     loadProgress();
     setupEventListeners();
     updateScore();
     updateTreeUI();
     setupOnboarding();
     setupControls();
+    console.log('Initialization complete');
 });
 
 // Обновление UI дерева
@@ -254,9 +256,15 @@ function initSpeechRecognition() {
 
 // Настройка обработчиков событий
 function setupEventListeners() {
+    console.log('Setting up event listeners...');
+
     // Кнопки выбора упражнений на дереве
-    document.querySelectorAll('.tree-exercise-card').forEach(button => {
+    const exerciseCards = document.querySelectorAll('.tree-exercise-card');
+    console.log('Found exercise cards:', exerciseCards.length);
+
+    exerciseCards.forEach(button => {
         button.addEventListener('click', (e) => {
+            console.log('Exercise card clicked:', e.currentTarget.dataset.exercise);
             const exercise = e.currentTarget.dataset.exercise;
             const index = treeExercises.indexOf(exercise);
 
