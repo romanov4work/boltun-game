@@ -148,6 +148,16 @@ body::after {
     bottom: 45%;
 }
 
+.character-9 {
+    left: 65%;
+    bottom: 25%;
+}
+
+.character-10 {
+    right: 40%;
+    bottom: 35%;
+}
+
 /* Адаптивность для мобильных */
 @media (max-width: 768px) {
     .character-button {
@@ -193,6 +203,16 @@ body::after {
     .character-8 {
         left: 40%;
         bottom: 50%;
+    }
+
+    .character-9 {
+        left: 60%;
+        bottom: 30%;
+    }
+
+    .character-10 {
+        right: 35%;
+        bottom: 40%;
     }
 
     .character-sprite {

@@ -437,6 +437,14 @@ function watchCartoon() {
     // Запускаем анимацию
     playAnimation(scene.animation, scene.duration);
 
+    // Озвучиваем текст голосом
+    const utterance = new SpeechSynthesisUtterance(scene.text);
+    utterance.lang = 'ru-RU';
+    utterance.rate = 0.9;
+    utterance.pitch = 1.2; // Более детский голос
+
+    window.speechSynthesis.speak(utterance);
+
     setTimeout(() => {
         watchBtn.disabled = false;
         watchBtn.textContent = '🎬 Посмотреть снова';
@@ -598,4 +606,188 @@ function resetCartoon() {
     recordedAudioBlob = null;
     if (animationInterval) clearInterval(animationInterval);
     loadCartoonScene();
+}
+
+// === УПРАЖНЕНИЕ "РАЗНАЯ СКОРОСТЬ ЧТЕНИЯ" ===
+
+const speedTexts = [
+    "Белка прыгает по веткам и собирает орешки",
+    "Кот Мурзик любит спать на теплом солнышке",
+    "Дети играют в парке и смеются от радости"
+];
+
+const speeds = [
+    { name: "Медленно", rate: 0.6, emoji: "🐢" },
+    { name: "Нормально", rate: 1.0, emoji: "🚶" },
+    { name: "Быстро", rate: 1.5, emoji: "🏃" }
+];
+
+let currentSpeedTextIndex = 0;
+let currentSpeedIndex = 0;
+
+function loadSpeedReading() {
+    const text = speedTexts[currentSpeedTextIndex];
+    const speed = speeds[currentSpeedIndex];
+
+    document.getElementById('speed-text').textContent = text;
+    document.getElementById('current-speed').textContent = `${speed.emoji} ${speed.name}`;
+    document.getElementById('result-panel-speed').classList.add('hidden');
+    document.getElementById('start-recording-speed').classList.remove('hidden');
+    document.getElementById('stop-recording-speed').classList.add('hidden');
+
+    const character = document.getElementById('character-speed');
+    character.style.backgroundImage = "url('assets/characters/character3.png')";
+}
+
+function startRecordingSpeed() {
+    if (!recognition) return;
+
+    document.getElementById('start-recording-speed').classList.add('hidden');
+    document.getElementById('stop-recording-speed').classList.remove('hidden');
+
+    startTime = Date.now();
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        handleSpeedResult(transcript);
+    };
+
+    recognition.start();
+}
+
+function stopRecordingSpeed() {
+    document.getElementById('start-recording-speed').classList.remove('hidden');
+    document.getElementById('stop-recording-speed').classList.add('hidden');
+    if (recognition) recognition.stop();
+}
+
+function handleSpeedResult(transcript) {
+    const elapsed = (Date.now() - startTime) / 1000;
+    const speed = speeds[currentSpeedIndex];
+
+    const points = 70;
+    score += points;
+    updateScore();
+
+    document.getElementById('result-title-speed').textContent = '⚡ Отлично!';
+    document.getElementById('result-message-speed').textContent = `Ты прочитал текст ${speed.name.toLowerCase()}! Время: ${elapsed.toFixed(1)} сек`;
+    document.getElementById('earned-points-speed').textContent = '+' + points;
+    document.getElementById('result-panel-speed').classList.remove('hidden');
+}
+
+function nextSpeed() {
+    currentSpeedIndex++;
+    if (currentSpeedIndex >= speeds.length) {
+        currentSpeedIndex = 0;
+        currentSpeedTextIndex++;
+        if (currentSpeedTextIndex >= speedTexts.length) {
+            currentSpeedTextIndex = 0;
+        }
+    }
+    loadSpeedReading();
+}
+
+function resetSpeedReading() {
+    currentSpeedTextIndex = 0;
+    currentSpeedIndex = 0;
+    loadSpeedReading();
+}
+
+// === УПРАЖНЕНИЕ "ПЕРЕСКАЗ С ДИКЦИЕЙ" ===
+
+const retellStories = [
+    {
+        title: "Колобок",
+        text: "Жили-были старик со старухой. Испекла старуха колобок и положила на окошко. Колобок полежал-полежал, да и покатился по дорожке.",
+        prompt: "Расскажи своими словами про Колобка"
+    },
+    {
+        title: "Репка",
+        text: "Посадил дед репку. Выросла репка большая-пребольшая. Стал дед репку тянуть. Тянет-потянет, вытянуть не может.",
+        prompt: "Расскажи своими словами про репку"
+    }
+];
+
+let currentRetellIndex = 0;
+let storyPlayed = false;
+
+function loadRetellStory() {
+    const story = retellStories[currentRetellIndex];
+
+    document.getElementById('retell-title').textContent = story.title;
+    document.getElementById('retell-text').textContent = story.text;
+    document.getElementById('retell-prompt').textContent = story.prompt;
+    document.getElementById('result-panel-retell').classList.add('hidden');
+    document.getElementById('listen-story').classList.remove('hidden');
+    document.getElementById('start-retell').classList.add('hidden');
+    document.getElementById('stop-retell').classList.add('hidden');
+    storyPlayed = false;
+
+    const character = document.getElementById('character-retell');
+    character.style.backgroundImage = "url('assets/characters/feya.png')";
+}
+
+function listenStory() {
+    const story = retellStories[currentRetellIndex];
+    const listenBtn = document.getElementById('listen-story');
+
+    listenBtn.disabled = true;
+    listenBtn.textContent = '🔊 Слушаем...';
+
+    const utterance = new SpeechSynthesisUtterance(story.text);
+    utterance.lang = 'ru-RU';
+    utterance.rate = 0.8;
+
+    utterance.onend = () => {
+        listenBtn.disabled = false;
+        listenBtn.textContent = '🔊 Послушать снова';
+        document.getElementById('start-retell').classList.remove('hidden');
+        storyPlayed = true;
+    };
+
+    window.speechSynthesis.speak(utterance);
+}
+
+function startRetell() {
+    if (!recognition) return;
+
+    document.getElementById('start-retell').classList.add('hidden');
+    document.getElementById('stop-retell').classList.remove('hidden');
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        handleRetellResult(transcript);
+    };
+
+    recognition.start();
+}
+
+function stopRetell() {
+    document.getElementById('start-retell').classList.remove('hidden');
+    document.getElementById('stop-retell').classList.add('hidden');
+    if (recognition) recognition.stop();
+}
+
+function handleRetellResult(transcript) {
+    const points = 120;
+    score += points;
+    updateScore();
+
+    document.getElementById('result-title-retell').textContent = '📖 Отлично!';
+    document.getElementById('result-message-retell').textContent = 'Ты пересказал историю своими словами!';
+    document.getElementById('earned-points-retell').textContent = '+' + points;
+    document.getElementById('result-panel-retell').classList.remove('hidden');
+}
+
+function nextRetellStory() {
+    currentRetellIndex++;
+    if (currentRetellIndex >= retellStories.length) {
+        currentRetellIndex = 0;
+    }
+    loadRetellStory();
+}
+
+function resetRetell() {
+    currentRetellIndex = 0;
+    loadRetellStory();
 }

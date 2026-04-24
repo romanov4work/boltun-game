@@ -94,6 +94,8 @@ function setupEventListeners() {
     document.getElementById('back-to-menu-words').addEventListener('click', () => showScreen('menu-screen'));
     document.getElementById('back-to-menu-articulation').addEventListener('click', () => showScreen('menu-screen'));
     document.getElementById('back-to-menu-cartoon').addEventListener('click', () => showScreen('menu-screen'));
+    document.getElementById('back-to-menu-speed').addEventListener('click', () => showScreen('menu-screen'));
+    document.getElementById('back-to-menu-retell').addEventListener('click', () => showScreen('menu-screen'));
 
     // Скороговорки
     document.getElementById('start-recording').addEventListener('click', startRecording);
@@ -133,6 +135,17 @@ function setupEventListeners() {
     document.getElementById('record-voiceover').addEventListener('click', startVoiceoverRecording);
     document.getElementById('watch-my-version').addEventListener('click', watchMyVersion);
     document.getElementById('next-cartoon').addEventListener('click', nextCartoonScene);
+
+    // Скорость чтения
+    document.getElementById('start-recording-speed').addEventListener('click', startRecordingSpeed);
+    document.getElementById('stop-recording-speed').addEventListener('click', stopRecordingSpeed);
+    document.getElementById('next-speed').addEventListener('click', nextSpeed);
+
+    // Пересказ
+    document.getElementById('listen-story').addEventListener('click', listenStory);
+    document.getElementById('start-retell').addEventListener('click', startRetell);
+    document.getElementById('stop-retell').addEventListener('click', stopRetell);
+    document.getElementById('next-retell').addEventListener('click', nextRetellStory);
 }
 
 // Переключение экранов
@@ -146,6 +159,8 @@ function showScreen(screenId) {
     document.getElementById('hard-words-screen').classList.toggle('hidden', screenId !== 'hard-words-screen');
     document.getElementById('articulation-screen').classList.toggle('hidden', screenId !== 'articulation-screen');
     document.getElementById('cartoon-voiceover-screen').classList.toggle('hidden', screenId !== 'cartoon-voiceover-screen');
+    document.getElementById('speed-reading-screen').classList.toggle('hidden', screenId !== 'speed-reading-screen');
+    document.getElementById('retelling-screen').classList.toggle('hidden', screenId !== 'retelling-screen');
 }
 
 // Запуск упражнения
@@ -181,6 +196,12 @@ function startExercise(exerciseType) {
     } else if (exerciseType === 'cartoon-voiceover') {
         showScreen('cartoon-voiceover-screen');
         resetCartoon();
+    } else if (exerciseType === 'speed-reading') {
+        showScreen('speed-reading-screen');
+        resetSpeedReading();
+    } else if (exerciseType === 'retelling') {
+        showScreen('retelling-screen');
+        resetRetell();
     } else {
         alert('Это упражнение скоро будет доступно!');
     }

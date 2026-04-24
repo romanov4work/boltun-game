@@ -209,3 +209,36 @@
     color: #999;
     font-style: italic;
 }
+
+/* Скорость чтения */
+.speed-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 32px;
+    border-radius: 24px;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 16px 0;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Пересказ */
+.retell-text {
+    font-size: 18px;
+    color: #2D3748;
+    line-height: 1.8;
+    background: #F7FAFC;
+    padding: 24px;
+    border-radius: 16px;
+    margin: 16px 0;
+    border-left: 4px solid #7B68EE;
+}
+
+.retell-prompt {
+    font-size: 20px;
+    color: #7B68EE;
+    font-weight: 600;
+    margin: 16px 0;
+    text-align: center;
+}
