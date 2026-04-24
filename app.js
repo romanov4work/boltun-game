@@ -240,6 +240,35 @@ function isExerciseCompleted(exerciseId) {
     return exerciseProgress[exerciseId] >= total;
 }
 
+// Генерация плиток уроков для модуля
+function generateLessonTiles(cardElement, exerciseId) {
+    const total = getExerciseTotal(exerciseId);
+    const lessonsGrid = document.createElement('div');
+    lessonsGrid.className = 'lessons-grid';
+
+    for (let i = 1; i <= total; i++) {
+        const tile = document.createElement('div');
+        tile.className = 'lesson-tile';
+        if (i <= exerciseProgress[exerciseId]) {
+            tile.classList.add('completed');
+        }
+
+        tile.innerHTML = `
+            <div class="lesson-number">${i}</div>
+            <div>Урок ${i}</div>
+        `;
+
+        tile.addEventListener('click', (e) => {
+            e.stopPropagation();
+            startExercise(exerciseId);
+        });
+
+        lessonsGrid.appendChild(tile);
+    }
+
+    cardElement.appendChild(lessonsGrid);
+}
+
 // Получить общее количество заданий в упражнении
 function getExerciseTotal(exerciseId) {
     const totals = {
@@ -312,7 +341,21 @@ function setupEventListeners() {
 
             // Проверяем разблокировано ли упражнение
             if (isExerciseUnlocked(exercise, index)) {
-                startExercise(exercise);
+                // Раскрываем/сворачиваем модуль
+                const isExpanded = e.currentTarget.classList.contains('expanded');
+
+                // Сворачиваем все другие модули
+                document.querySelectorAll('.tree-exercise-card').forEach(card => {
+                    card.classList.remove('expanded');
+                });
+
+                if (!isExpanded) {
+                    e.currentTarget.classList.add('expanded');
+                    // Генерируем плитки уроков если их еще нет
+                    if (!e.currentTarget.querySelector('.lessons-grid')) {
+                        generateLessonTiles(e.currentTarget, exercise);
+                    }
+                }
             } else {
                 alert('Сначала нужно завершить предыдущее упражнение! 🌟');
             }

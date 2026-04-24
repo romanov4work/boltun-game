@@ -20,7 +20,7 @@
     font-size: 65px;
     animation: cloudFloat3 50s ease-in-out infinite;
     opacity: 0.75;
-    z-index: 1;
+    z-index: 0;
 }
 
 @keyframes cloudFloat3 {
@@ -36,12 +36,50 @@
     font-size: 60px;
     animation: cloudFloat4 60s ease-in-out infinite;
     opacity: 0.7;
-    z-index: 1;
+    z-index: 0;
 }
 
 @keyframes cloudFloat4 {
     0%, 100% { transform: translate(0, 0); }
     50% { transform: translate(90px, 20px); }
+}
+
+/* Дополнительные облака через контейнер */
+.tree-container::before {
+    content: '☁️';
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    font-size: 50px;
+    animation: cloudFloat5 40s ease-in-out infinite;
+    opacity: 0.65;
+    z-index: 0;
+}
+
+@keyframes cloudFloat5 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(70px, -15px); }
+}
+
+.tree-container::after {
+    content: '☁️';
+    position: absolute;
+    top: 30%;
+    right: 5%;
+    font-size: 55px;
+    animation: cloudFloat6 48s ease-in-out infinite;
+    opacity: 0.7;
+    z-index: 0;
+}
+
+@keyframes cloudFloat6 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-50px, 10px); }
+}
+
+/* Карта прогресса - скрываем */
+.progress-map {
+    display: none;
 }
 
 /* Header - скрываем */
@@ -207,6 +245,52 @@
     display: flex;
     align-items: center;
     gap: 20px;
+}
+
+/* Сетка уроков внутри модуля */
+.lessons-grid {
+    display: none;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+}
+
+.tree-exercise-card.expanded .lessons-grid {
+    display: grid;
+}
+
+.lesson-tile {
+    background: white;
+    border: 2px solid #E0E0E0;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.lesson-tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: #4CAF50;
+}
+
+.lesson-tile.completed {
+    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+    border-color: #4CAF50;
+}
+
+.lesson-tile .lesson-number {
+    font-size: 20px;
+    font-weight: 900;
+    color: #5B4FE8;
+    margin-bottom: 4px;
 }
 
 /* Разные цвета для каждого модуля */
