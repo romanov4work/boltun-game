@@ -522,6 +522,15 @@ function loadTwister() {
     const character = document.getElementById('character');
     character.style.backgroundImage = "url('assets/characters/feya.png')";
     character.textContent = '';
+
+    // Озвучиваем скороговорку
+    if (soundEnabled && 'speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(`Прочитай скороговорку: ${twister.text}`);
+        utterance.lang = 'ru-RU';
+        utterance.rate = 0.85;
+        utterance.pitch = 1.1;
+        window.speechSynthesis.speak(utterance);
+    }
 }
 
 // Загрузка слова со звуком Р
