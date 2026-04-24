@@ -129,9 +129,9 @@ function setupEventListeners() {
     document.getElementById('repeat-articulation').addEventListener('click', repeatArticulation);
 
     // Озвучка мультфильма
-    document.getElementById('play-cartoon').addEventListener('click', playCartoonWithSound);
+    document.getElementById('watch-cartoon').addEventListener('click', watchCartoon);
     document.getElementById('record-voiceover').addEventListener('click', startVoiceoverRecording);
-    document.getElementById('play-my-voice').addEventListener('click', playMyVoiceover);
+    document.getElementById('watch-my-version').addEventListener('click', watchMyVersion);
     document.getElementById('next-cartoon').addEventListener('click', nextCartoonScene);
 }
 

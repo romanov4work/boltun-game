@@ -383,17 +383,20 @@ const cartoonScenes = [
     {
         title: "Колобок убегает",
         text: "Я Колобок, Колобок! По амбару метён, по сусекам скребён!",
+        animation: "kolobok",
         duration: 3000
     },
     {
-        title: "Три медведя",
-        text: "Кто сидел на моём стуле и сломал его?",
+        title: "Зайчик прыгает",
+        text: "Прыг-скок, прыг-скок! Я веселый зайчик!",
+        animation: "rabbit",
         duration: 2500
     },
     {
-        title: "Репка",
-        text: "Тянут-потянут, вытянуть не могут!",
-        duration: 2000
+        title: "Солнышко встает",
+        text: "Солнышко встает, всем тепло дает!",
+        animation: "sun",
+        duration: 2500
     }
 ];
 
@@ -401,41 +404,126 @@ let currentCartoonIndex = 0;
 let userRecording = null;
 let mediaRecorder = null;
 let audioChunks = [];
+let recordedAudioBlob = null;
+let animationInterval = null;
 
 function loadCartoonScene() {
     const scene = cartoonScenes[currentCartoonIndex];
     document.getElementById('cartoon-title').textContent = scene.title;
     document.getElementById('cartoon-text').textContent = scene.text;
     document.getElementById('result-panel-cartoon').classList.add('hidden');
-    document.getElementById('play-cartoon').classList.remove('hidden');
+    document.getElementById('watch-cartoon').classList.remove('hidden');
     document.getElementById('record-voiceover').classList.add('hidden');
-    document.getElementById('play-my-voice').classList.add('hidden');
+    document.getElementById('watch-my-version').classList.add('hidden');
+
+    // Очищаем canvas
+    const canvas = document.getElementById('cartoon-canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#E8F4F8';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const character = document.getElementById('character-cartoon');
     character.style.backgroundImage = "url('assets/characters/feya.png')";
 }
 
-async function playCartoonWithSound() {
+function watchCartoon() {
     const scene = cartoonScenes[currentCartoonIndex];
-    const playBtn = document.getElementById('play-cartoon');
-    playBtn.disabled = true;
-    playBtn.textContent = '🎬 Играет...';
+    const watchBtn = document.getElementById('watch-cartoon');
 
-    // Используем Speech Synthesis API для озвучки
-    const utterance = new SpeechSynthesisUtterance(scene.text);
-    utterance.lang = 'ru-RU';
-    utterance.rate = 0.9;
+    watchBtn.disabled = true;
+    watchBtn.textContent = '🎬 Играет...';
 
-    utterance.onend = () => {
-        playBtn.disabled = false;
-        playBtn.textContent = '🎬 Посмотреть снова';
+    // Запускаем анимацию
+    playAnimation(scene.animation, scene.duration);
+
+    setTimeout(() => {
+        watchBtn.disabled = false;
+        watchBtn.textContent = '🎬 Посмотреть снова';
         document.getElementById('record-voiceover').classList.remove('hidden');
-    };
+    }, scene.duration);
+}
 
-    window.speechSynthesis.speak(utterance);
+function playAnimation(type, duration) {
+    const canvas = document.getElementById('cartoon-canvas');
+    const ctx = canvas.getContext('2d');
+    const startTime = Date.now();
+
+    if (animationInterval) clearInterval(animationInterval);
+
+    animationInterval = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        const progress = elapsed / duration;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#E8F4F8';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        if (type === 'kolobok') {
+            // Колобок катится
+            const x = 50 + (canvas.width - 100) * progress;
+            const y = canvas.height / 2;
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.arc(x, y, 40, 0, Math.PI * 2);
+            ctx.fill();
+            // Лицо
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.arc(x - 12, y - 8, 4, 0, Math.PI * 2);
+            ctx.arc(x + 12, y - 8, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(x, y + 5, 15, 0, Math.PI);
+            ctx.stroke();
+        } else if (type === 'rabbit') {
+            // Зайчик прыгает
+            const x = canvas.width / 2;
+            const jumpHeight = Math.abs(Math.sin(progress * Math.PI * 4)) * 80;
+            const y = canvas.height - 60 - jumpHeight;
+            // Тело
+            ctx.fillStyle = '#DDD';
+            ctx.fillRect(x - 20, y, 40, 50);
+            // Уши
+            ctx.fillRect(x - 15, y - 30, 10, 30);
+            ctx.fillRect(x + 5, y - 30, 10, 30);
+            // Глаза
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.arc(x - 8, y + 15, 3, 0, Math.PI * 2);
+            ctx.arc(x + 8, y + 15, 3, 0, Math.PI * 2);
+            ctx.fill();
+        } else if (type === 'sun') {
+            // Солнышко встает
+            const y = canvas.height - (canvas.height * 0.7 * progress);
+            const x = canvas.width / 2;
+            // Солнце
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.arc(x, y, 50, 0, Math.PI * 2);
+            ctx.fill();
+            // Лучи
+            ctx.strokeStyle = '#FFD700';
+            ctx.lineWidth = 4;
+            for (let i = 0; i < 8; i++) {
+                const angle = (Math.PI * 2 / 8) * i;
+                ctx.beginPath();
+                ctx.moveTo(x + Math.cos(angle) * 60, y + Math.sin(angle) * 60);
+                ctx.lineTo(x + Math.cos(angle) * 80, y + Math.sin(angle) * 80);
+                ctx.stroke();
+            }
+        }
+
+        if (elapsed >= duration) {
+            clearInterval(animationInterval);
+        }
+    }, 1000 / 30); // 30 FPS
 }
 
 async function startVoiceoverRecording() {
+    const scene = cartoonScenes[currentCartoonIndex];
+    const recordBtn = document.getElementById('record-voiceover');
+
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         audioChunks = [];
@@ -447,43 +535,50 @@ async function startVoiceoverRecording() {
         };
 
         mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-            userRecording = URL.createObjectURL(audioBlob);
-            document.getElementById('play-my-voice').classList.remove('hidden');
-            document.getElementById('record-voiceover').classList.remove('hidden');
-            document.getElementById('record-voiceover').textContent = '🎤 Записать заново';
+            recordedAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            userRecording = URL.createObjectURL(recordedAudioBlob);
+
+            document.getElementById('watch-my-version').classList.remove('hidden');
+            recordBtn.classList.remove('hidden');
+            recordBtn.textContent = '🎤 Записать заново';
+            recordBtn.disabled = false;
 
             // Показываем результат
             score += 100;
             updateScore();
             document.getElementById('result-title-cartoon').textContent = '🎬 Отлично!';
-            document.getElementById('result-message-cartoon').textContent = 'Ты озвучил сцену! Послушай свою запись.';
+            document.getElementById('result-message-cartoon').textContent = 'Ты озвучил мультик! Посмотри что получилось.';
             document.getElementById('earned-points-cartoon').textContent = '+100';
             document.getElementById('result-panel-cartoon').classList.remove('hidden');
         };
 
+        // Запускаем анимацию и запись одновременно
         mediaRecorder.start();
-        document.getElementById('record-voiceover').textContent = '⏹️ Остановить запись';
-        document.getElementById('record-voiceover').onclick = stopVoiceoverRecording;
+        playAnimation(scene.animation, scene.duration);
+
+        recordBtn.textContent = '⏹️ Идет запись...';
+        recordBtn.disabled = true;
+
+        // Останавливаем запись через duration
+        setTimeout(() => {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            }
+        }, scene.duration);
 
     } catch (error) {
         alert('Не удалось получить доступ к микрофону');
     }
 }
 
-function stopVoiceoverRecording() {
-    if (mediaRecorder && mediaRecorder.state === 'recording') {
-        mediaRecorder.stop();
-        mediaRecorder.stream.getTracks().forEach(track => track.stop());
-        document.getElementById('record-voiceover').onclick = startVoiceoverRecording;
-    }
-}
+function watchMyVersion() {
+    const scene = cartoonScenes[currentCartoonIndex];
+    const audio = new Audio(userRecording);
 
-function playMyVoiceover() {
-    if (userRecording) {
-        const audio = new Audio(userRecording);
-        audio.play();
-    }
+    // Синхронизируем анимацию и аудио
+    playAnimation(scene.animation, scene.duration);
+    audio.play();
 }
 
 function nextCartoonScene() {
@@ -492,11 +587,15 @@ function nextCartoonScene() {
         currentCartoonIndex = 0;
     }
     userRecording = null;
+    recordedAudioBlob = null;
+    if (animationInterval) clearInterval(animationInterval);
     loadCartoonScene();
 }
 
 function resetCartoon() {
     currentCartoonIndex = 0;
     userRecording = null;
+    recordedAudioBlob = null;
+    if (animationInterval) clearInterval(animationInterval);
     loadCartoonScene();
 }
