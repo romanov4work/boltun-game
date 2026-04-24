@@ -394,9 +394,28 @@ function setupEventListeners() {
     document.getElementById('back-to-menu-retell').addEventListener('click', () => showScreen('menu-screen'));
 
     // Скороговорки
-    document.getElementById('start-recording').addEventListener('click', () => startRecording());
-    document.getElementById('stop-recording').addEventListener('click', () => stopRecording());
-    document.getElementById('next-exercise').addEventListener('click', () => nextTwister());
+    const startBtn = document.getElementById('start-recording');
+    const stopBtn = document.getElementById('stop-recording');
+    const nextBtn = document.getElementById('next-exercise');
+
+    console.log('Tongue twister buttons:', { startBtn, stopBtn, nextBtn });
+
+    if (startBtn) {
+        startBtn.addEventListener('click', () => {
+            console.log('Start recording button clicked!');
+            startRecording();
+        });
+    } else {
+        console.error('start-recording button not found!');
+    }
+
+    if (stopBtn) {
+        stopBtn.addEventListener('click', () => stopRecording());
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => nextTwister());
+    }
 
     // Звуки
     document.getElementById('start-recording-sounds').addEventListener('click', startRecordingSounds);
@@ -599,18 +618,25 @@ function loadArticulation() {
 
 // Начало записи
 function startRecording() {
+    console.log('startRecording() called');
+    console.log('recognition object:', recognition);
+
     if (!recognition) {
         console.log('Recognition not initialized, initializing now...');
         initSpeechRecognition();
 
         if (!recognition) {
+            console.error('Failed to initialize recognition');
             alert('Распознавание речи недоступно. Убедись, что разрешил доступ к микрофону.');
             return;
         }
     }
 
+    console.log('Setting up onresult handler...');
+
     // Устанавливаем обработчик результата для скороговорок
     recognition.onresult = (event) => {
+        console.log('onresult fired!', event);
         const result = event.results[event.results.length - 1];
 
         // Если это финальный результат
@@ -638,10 +664,12 @@ function startRecording() {
         }
     };
 
+    console.log('Hiding start button, showing stop button...');
     document.getElementById('start-recording').classList.add('hidden');
     document.getElementById('stop-recording').classList.remove('hidden');
 
     // Запуск таймера
+    console.log('Starting timer...');
     startTime = Date.now();
     timerInterval = setInterval(updateTimer, 100);
 
@@ -652,6 +680,7 @@ function startRecording() {
 
     // Запуск распознавания
     try {
+        console.log('Starting recognition...');
         recognition.start();
         console.log('Recognition started for tongue twisters');
     } catch (error) {
