@@ -289,11 +289,37 @@ function initSpeechRecognition() {
         recognition = new SpeechRecognition();
         recognition.lang = 'ru-RU';
         recognition.continuous = false;
-        recognition.interimResults = false;
+        recognition.interimResults = true; // Показываем промежуточные результаты
+        recognition.maxAlternatives = 3; // Получаем несколько вариантов распознавания
 
         recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript.toLowerCase().trim();
-            handleSpeechResult(transcript);
+            const result = event.results[event.results.length - 1];
+
+            // Если это финальный результат
+            if (result.isFinal) {
+                // Берем лучший вариант
+                const transcript = result[0].transcript.toLowerCase().trim();
+                const confidence = result[0].confidence;
+
+                console.log('Распознано:', transcript, 'Уверенность:', confidence);
+
+                // Показываем альтернативные варианты для отладки
+                for (let i = 0; i < result.length; i++) {
+                    console.log(`Вариант ${i + 1}:`, result[i].transcript, result[i].confidence);
+                }
+
+                handleSpeechResult(transcript, confidence);
+            } else {
+                // Промежуточный результат - показываем пользователю что распознается
+                const interim = result[0].transcript;
+                console.log('Промежуточно:', interim);
+
+                // Можно показать в UI что распознается
+                const twisterEl = document.getElementById('current-twister');
+                if (twisterEl) {
+                    twisterEl.style.opacity = '0.6';
+                }
+            }
         };
 
         recognition.onerror = (event) => {
@@ -653,15 +679,26 @@ function updateTimer() {
 }
 
 // Обработка результата распознавания
-function handleSpeechResult(transcript) {
+function handleSpeechResult(transcript, confidence = 1.0) {
     const elapsed = (Date.now() - startTime) / 1000;
     const twister = tongueTwisters[currentTwisterIndex];
     const targetText = twister.text.toLowerCase().replace(/[.,!?]/g, '').trim();
 
-    // Проверка похожести текста
-    const similarity = calculateSimilarity(transcript, targetText);
+    console.log('Целевой текст:', targetText);
+    console.log('Распознано:', transcript);
+    console.log('Уверенность API:', confidence);
+
+    // Нормализуем текст (убираем лишние пробелы, знаки)
+    const normalizedTranscript = transcript.replace(/[.,!?]/g, '').trim();
+
+    // Проверка похожести текста (улучшенная)
+    const similarity = calculateAdvancedSimilarity(normalizedTranscript, targetText);
+
+    // Бонус за высокую уверенность API
+    const confidenceBonus = confidence > 0.8 ? 1.1 : 1.0;
+
     const timeScore = elapsed <= twister.target ? 100 : Math.max(0, 100 - (elapsed - twister.target) * 10);
-    const accuracyScore = similarity * 100;
+    const accuracyScore = similarity * 100 * confidenceBonus;
     const totalScore = Math.round((timeScore + accuracyScore) / 2);
 
     // Начисление баллов
@@ -675,26 +712,78 @@ function handleSpeechResult(transcript) {
     saveProgress();
 
     // Показ результата
-    showResult(elapsed, twister.target, earnedPoints, similarity);
+    showResult(elapsed, twister.target, earnedPoints, similarity, transcript);
 }
 
-// Вычисление похожести строк (простой алгоритм)
-function calculateSimilarity(str1, str2) {
-    const words1 = str1.split(' ');
-    const words2 = str2.split(' ');
-    let matches = 0;
+// Вычисление похожести строк (улучшенный алгоритм)
+function calculateAdvancedSimilarity(str1, str2) {
+    // Простое сравнение по словам
+    const words1 = str1.split(' ').filter(w => w.length > 0);
+    const words2 = str2.split(' ').filter(w => w.length > 0);
 
-    words1.forEach(word => {
-        if (words2.includes(word)) {
+    let matches = 0;
+    let partialMatches = 0;
+
+    words1.forEach(word1 => {
+        // Точное совпадение
+        if (words2.includes(word1)) {
             matches++;
+        } else {
+            // Частичное совпадение (похожие слова)
+            words2.forEach(word2 => {
+                const wordSimilarity = levenshteinSimilarity(word1, word2);
+                if (wordSimilarity > 0.7) {
+                    partialMatches += wordSimilarity;
+                }
+            });
         }
     });
 
-    return matches / Math.max(words1.length, words2.length);
+    const totalMatches = matches + (partialMatches * 0.5);
+    const maxWords = Math.max(words1.length, words2.length);
+
+    return Math.min(1.0, totalMatches / maxWords);
+}
+
+// Levenshtein distance для сравнения похожести слов
+function levenshteinSimilarity(str1, str2) {
+    const len1 = str1.length;
+    const len2 = str2.length;
+
+    if (len1 === 0) return len2 === 0 ? 1 : 0;
+    if (len2 === 0) return 0;
+
+    const matrix = [];
+
+    for (let i = 0; i <= len2; i++) {
+        matrix[i] = [i];
+    }
+
+    for (let j = 0; j <= len1; j++) {
+        matrix[0][j] = j;
+    }
+
+    for (let i = 1; i <= len2; i++) {
+        for (let j = 1; j <= len1; j++) {
+            if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1,
+                    matrix[i][j - 1] + 1,
+                    matrix[i - 1][j] + 1
+                );
+            }
+        }
+    }
+
+    const distance = matrix[len2][len1];
+    const maxLen = Math.max(len1, len2);
+    return 1 - (distance / maxLen);
 }
 
 // Показ результата
-function showResult(userTime, targetTime, points, accuracy) {
+function showResult(userTime, targetTime, points, accuracy, transcript = '') {
     const resultPanel = document.getElementById('result-panel');
     const character = document.getElementById('character');
 
@@ -712,6 +801,11 @@ function showResult(userTime, targetTime, points, accuracy) {
         title = '💪 Попробуй еще!';
         message = 'Продолжай тренироваться, у тебя получится!';
         emoji = '🤔';
+    }
+
+    // Показываем что было распознано
+    if (transcript) {
+        message += `\n\nРаспознано: "${transcript}"`;
     }
 
     character.style.backgroundImage = "url('assets/characters/feya.png')";
