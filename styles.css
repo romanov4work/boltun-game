@@ -127,6 +127,22 @@ body::after {
     bottom: 14%;
 }
 
+.character-5 {
+    left: 50%;
+    bottom: 20%;
+    transform: translateX(-50%);
+}
+
+.character-6 {
+    left: 20%;
+    bottom: 35%;
+}
+
+.character-7 {
+    right: 20%;
+    bottom: 40%;
+}
+
 /* Адаптивность для мобильных */
 @media (max-width: 768px) {
     .character-button {
@@ -151,6 +167,22 @@ body::after {
     .character-4 {
         right: 25%;
         bottom: 18%;
+    }
+
+    .character-5 {
+        left: 50%;
+        bottom: 10%;
+        transform: translateX(-50%) scale(0.8);
+    }
+
+    .character-6 {
+        left: 15%;
+        bottom: 40%;
+    }
+
+    .character-7 {
+        right: 15%;
+        bottom: 45%;
     }
 
     .character-sprite {
