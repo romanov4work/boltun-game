@@ -292,36 +292,7 @@ function initSpeechRecognition() {
         recognition.interimResults = true; // Показываем промежуточные результаты
         recognition.maxAlternatives = 3; // Получаем несколько вариантов распознавания
 
-        recognition.onresult = (event) => {
-            const result = event.results[event.results.length - 1];
-
-            // Если это финальный результат
-            if (result.isFinal) {
-                // Берем лучший вариант
-                const transcript = result[0].transcript.toLowerCase().trim();
-                const confidence = result[0].confidence;
-
-                console.log('Распознано:', transcript, 'Уверенность:', confidence);
-
-                // Показываем альтернативные варианты для отладки
-                for (let i = 0; i < result.length; i++) {
-                    console.log(`Вариант ${i + 1}:`, result[i].transcript, result[i].confidence);
-                }
-
-                handleSpeechResult(transcript, confidence);
-            } else {
-                // Промежуточный результат - показываем пользователю что распознается
-                const interim = result[0].transcript;
-                console.log('Промежуточно:', interim);
-
-                // Можно показать в UI что распознается
-                const twisterEl = document.getElementById('current-twister');
-                if (twisterEl) {
-                    twisterEl.style.opacity = '0.6';
-                }
-            }
-        };
-
+        // Базовый обработчик ошибок (может быть перезаписан)
         recognition.onerror = (event) => {
             console.error('Ошибка распознавания:', event.error);
             stopRecording();
@@ -338,8 +309,11 @@ function initSpeechRecognition() {
         };
 
         recognition.onend = () => {
+            console.log('Recognition ended');
             stopRecording();
         };
+
+        console.log('Speech recognition initialized');
     } else {
         alert('Твой браузер не поддерживает распознавание речи. Попробуй Chrome или Edge.');
     }
@@ -635,6 +609,35 @@ function startRecording() {
         }
     }
 
+    // Устанавливаем обработчик результата для скороговорок
+    recognition.onresult = (event) => {
+        const result = event.results[event.results.length - 1];
+
+        // Если это финальный результат
+        if (result.isFinal) {
+            const transcript = result[0].transcript.toLowerCase().trim();
+            const confidence = result[0].confidence;
+
+            console.log('Распознано:', transcript, 'Уверенность:', confidence);
+
+            // Показываем альтернативные варианты для отладки
+            for (let i = 0; i < result.length; i++) {
+                console.log(`Вариант ${i + 1}:`, result[i].transcript, result[i].confidence);
+            }
+
+            handleSpeechResult(transcript, confidence);
+        } else {
+            // Промежуточный результат
+            const interim = result[0].transcript;
+            console.log('Промежуточно:', interim);
+
+            const twisterEl = document.getElementById('current-twister');
+            if (twisterEl) {
+                twisterEl.style.opacity = '0.6';
+            }
+        }
+    };
+
     document.getElementById('start-recording').classList.add('hidden');
     document.getElementById('stop-recording').classList.remove('hidden');
 
@@ -650,6 +653,7 @@ function startRecording() {
     // Запуск распознавания
     try {
         recognition.start();
+        console.log('Recognition started for tongue twisters');
     } catch (error) {
         console.error('Error starting recognition:', error);
         stopRecording();
