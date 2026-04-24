@@ -50,7 +50,7 @@
 
 /* Контейнер дерева */
 .tree-container {
-    max-width: 600px;
+    max-width: 500px;
     margin: 0 auto;
     position: relative;
     padding: 40px 0;
@@ -65,23 +65,23 @@
     left: 50%;
     top: 0;
     bottom: 0;
-    width: 400px;
+    width: 100px;
     background:
         repeating-linear-gradient(
             90deg,
             #8B4513 0px,
-            #A0522D 12px,
-            #8B4513 24px,
-            #654321 36px,
-            #8B4513 48px
+            #A0522D 8px,
+            #8B4513 16px,
+            #654321 24px,
+            #8B4513 32px
         ),
         linear-gradient(180deg, #6B3410 0%, #8B4513 50%, #654321 100%);
     transform: translateX(-50%);
-    border-radius: 80px;
+    border-radius: 50px;
     box-shadow:
-        inset -12px 0 30px rgba(0, 0, 0, 0.5),
-        inset 12px 0 30px rgba(139, 69, 19, 0.4),
-        0 0 50px rgba(139, 69, 19, 0.6);
+        inset -10px 0 25px rgba(0, 0, 0, 0.5),
+        inset 10px 0 25px rgba(139, 69, 19, 0.4),
+        0 0 40px rgba(139, 69, 19, 0.6);
 }
 
 /* Узел дерева (упражнение) */
@@ -248,7 +248,7 @@
     }
 
     .tree-trunk {
-        width: 300px;
+        width: 80px;
     }
 
     .tree-exercise-card {
