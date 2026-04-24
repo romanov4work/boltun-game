@@ -78,6 +78,21 @@ body::after {
     transition: filter 0.3s ease;
 }
 
+.emoji-character {
+    background: linear-gradient(135deg, #FFE5B4 0%, #FFD700 100%);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 80px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.character-button:hover .emoji-character {
+    transform: scale(1.1);
+    box-shadow: 0 12px 30px rgba(255, 215, 0, 0.5);
+}
+
 .character-button:hover .character-sprite {
     filter: drop-shadow(0 12px 30px rgba(255, 215, 0, 0.5));
 }
@@ -108,111 +123,113 @@ body::after {
 
 /* Позиции персонажей - размещаем в разных частях парка */
 .character-1 {
-    left: 10%;
-    bottom: 15%;
+    left: 5%;
+    bottom: 10%;
 }
 
 .character-2 {
-    right: 12%;
-    bottom: 18%;
+    right: 5%;
+    bottom: 10%;
 }
 
 .character-3 {
-    left: 30%;
-    bottom: 12%;
+    left: 25%;
+    bottom: 25%;
 }
 
 .character-4 {
-    right: 35%;
-    bottom: 14%;
+    right: 25%;
+    bottom: 25%;
 }
 
 .character-5 {
     left: 50%;
-    bottom: 20%;
+    bottom: 5%;
     transform: translateX(-50%);
 }
 
 .character-6 {
-    left: 20%;
-    bottom: 35%;
-}
-
-.character-7 {
-    right: 20%;
-    bottom: 40%;
-}
-
-.character-8 {
-    left: 45%;
+    left: 15%;
     bottom: 45%;
 }
 
+.character-7 {
+    right: 15%;
+    bottom: 45%;
+}
+
+.character-8 {
+    left: 50%;
+    bottom: 35%;
+    transform: translateX(-50%);
+}
+
 .character-9 {
-    left: 65%;
-    bottom: 25%;
+    left: 35%;
+    bottom: 60%;
 }
 
 .character-10 {
-    right: 40%;
-    bottom: 35%;
+    right: 35%;
+    bottom: 60%;
 }
 
 /* Адаптивность для мобильных */
 @media (max-width: 768px) {
     .character-button {
-        transform: scale(0.8);
+        transform: scale(0.7);
     }
 
     .character-1 {
-        left: 5%;
-        bottom: 20%;
+        left: 2%;
+        bottom: 5%;
     }
 
     .character-2 {
-        right: 5%;
-        bottom: 25%;
+        right: 2%;
+        bottom: 5%;
     }
 
     .character-3 {
-        left: 25%;
+        left: 20%;
         bottom: 15%;
     }
 
     .character-4 {
-        right: 25%;
-        bottom: 18%;
+        right: 20%;
+        bottom: 15%;
     }
 
     .character-5 {
         left: 50%;
-        bottom: 10%;
-        transform: translateX(-50%) scale(0.8);
+        bottom: 2%;
+        transform: translateX(-50%) scale(0.7);
     }
 
     .character-6 {
-        left: 15%;
-        bottom: 40%;
-    }
-
-    .character-7 {
-        right: 15%;
-        bottom: 45%;
-    }
-
-    .character-8 {
-        left: 40%;
-        bottom: 50%;
-    }
-
-    .character-9 {
-        left: 60%;
+        left: 10%;
         bottom: 30%;
     }
 
+    .character-7 {
+        right: 10%;
+        bottom: 30%;
+    }
+
+    .character-8 {
+        left: 50%;
+        bottom: 25%;
+        transform: translateX(-50%) scale(0.7);
+    }
+
+    .character-9 {
+        left: 30%;
+        bottom: 45%;
+    }
+
     .character-10 {
-        right: 35%;
-        bottom: 40%;
+        right: 30%;
+        bottom: 45%;
     }
 
     .character-sprite {
