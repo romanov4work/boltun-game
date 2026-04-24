@@ -165,30 +165,46 @@ function isExerciseCompleted(exerciseId) {
 
 // Генерация плиток уроков для модуля
 function generateLessonTiles(cardElement, exerciseId) {
-    const total = getExerciseTotal(exerciseId);
+    // Показываем только первый урок
     const lessonsGrid = document.createElement('div');
     lessonsGrid.className = 'lessons-grid';
 
-    for (let i = 1; i <= total; i++) {
-        const tile = document.createElement('div');
-        tile.className = 'lesson-tile';
-        if (i <= exerciseProgress[exerciseId]) {
-            tile.classList.add('completed');
-        }
+    const tile = document.createElement('div');
+    tile.className = 'lesson-tile';
 
-        tile.innerHTML = `
-            <div class="lesson-number">${i}</div>
-            <div>Урок ${i}</div>
-        `;
-
-        tile.addEventListener('click', (e) => {
-            e.stopPropagation();
-            startExercise(exerciseId, i - 1); // Передаем индекс урока (начиная с 0)
-        });
-
-        lessonsGrid.appendChild(tile);
+    // Получаем текст первого задания
+    let lessonText = '';
+    if (exerciseId === 'tongue-twisters') {
+        lessonText = `Скороговорка "${tongueTwisters[0].text}"`;
+    } else if (exerciseId === 'emotions') {
+        lessonText = `Эмоция "${emotions[0].phrase}"`;
+    } else if (exerciseId === 'sounds') {
+        lessonText = 'Звук "Р"';
+    } else if (exerciseId === 'breathing') {
+        lessonText = 'Дыхательное упражнение';
+    } else if (exerciseId === 'speed-reading') {
+        lessonText = 'Быстрое чтение';
+    } else if (exerciseId === 'hard-words') {
+        lessonText = 'Сложное слово';
+    } else if (exerciseId === 'articulation') {
+        lessonText = 'Артикуляционная гимнастика';
+    } else if (exerciseId === 'pencil-challenge') {
+        lessonText = 'С карандашом во рту';
+    } else if (exerciseId === 'retelling') {
+        lessonText = 'Пересказ истории';
     }
 
+    tile.innerHTML = `
+        <div class="lesson-number">1 урок</div>
+        <div class="lesson-description">${lessonText}</div>
+    `;
+
+    tile.addEventListener('click', (e) => {
+        e.stopPropagation();
+        startExercise(exerciseId, 0);
+    });
+
+    lessonsGrid.appendChild(tile);
     cardElement.appendChild(lessonsGrid);
 }
 
