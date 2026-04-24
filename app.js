@@ -158,19 +158,6 @@ const tongueTwisters = [
     { text: "Король-орел, орел-король", target: 2.5, difficulty: 1 }
 ];
 
-// Порядок упражнений в дереве (снизу вверх - последовательное открытие)
-const treeExercises = [
-    'tongue-twisters',  // 1. Старт (низ дерева)
-    'sounds',           // 2. Основы
-    'breathing',        // 3. Основы
-    'emotions',         // 4. Выразительность
-    'speed-reading',    // 5. Выразительность
-    'hard-words',       // 6. Выразительность
-    'articulation',     // 7. Мастерство
-    'pencil-challenge', // 8. Мастерство
-    'retelling'         // 9. Вершина дерева
-];
-
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
     loadProgress();
