@@ -6,7 +6,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
-    background: url('assets/background.avif') center/cover no-repeat fixed;
+    background: linear-gradient(180deg, #87CEEB 0%, #98D8C8 50%, #90EE90 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -18,11 +18,35 @@ body {
 }
 
 body::before {
-    content: none;
+    content: '☁️ ☁️ ☁️ ☁️ ☁️';
+    position: absolute;
+    top: 10%;
+    left: 0;
+    width: 200%;
+    font-size: 60px;
+    animation: clouds 40s linear infinite;
+    opacity: 0.6;
+    z-index: 1;
+}
+
+@keyframes clouds {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0%); }
 }
 
 body::after {
-    content: none;
+    content: '☀️';
+    position: absolute;
+    top: 5%;
+    right: 10%;
+    font-size: 80px;
+    animation: sunshine 3s ease-in-out infinite;
+    z-index: 1;
+}
+
+@keyframes sunshine {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.1) rotate(10deg); }
 }
 
 /* Счет в углу */
@@ -30,17 +54,23 @@ body::after {
     position: fixed;
     top: 20px;
     right: 20px;
-    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-    padding: 12px 24px;
-    border-radius: 30px;
-    font-size: 24px;
-    font-weight: 700;
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    padding: 16px 32px;
+    border-radius: 50px;
+    font-size: 28px;
+    font-weight: 800;
     color: white;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(255, 107, 107, 0.4);
     z-index: 100;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+    animation: scorePulse 2s ease-in-out infinite;
+}
+
+@keyframes scorePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
 }
 
 /* Парк с персонажами */
@@ -79,18 +109,20 @@ body::after {
 }
 
 .emoji-character {
-    background: linear-gradient(135deg, #FFE5B4 0%, #FFD700 100%);
+    background: linear-gradient(135deg, #FFF9E6 0%, #FFE5B4 100%);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 80px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(255, 140, 0, 0.3);
+    border: 4px solid white;
+    transition: all 0.3s ease;
 }
 
 .character-button:hover .emoji-character {
-    transform: scale(1.1);
-    box-shadow: 0 12px 30px rgba(255, 215, 0, 0.5);
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 12px 32px rgba(255, 140, 0, 0.5);
 }
 
 .character-button:hover .character-sprite {
@@ -99,26 +131,27 @@ body::after {
 
 .character-label {
     background: white;
-    padding: 10px 20px;
-    border-radius: 20px;
+    padding: 12px 24px;
+    border-radius: 30px;
     font-size: 18px;
-    font-weight: 700;
-    color: #2D3748;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-weight: 800;
+    color: #5B4FE8;
+    box-shadow: 0 6px 20px rgba(91, 79, 232, 0.3);
     position: relative;
+    border: 3px solid #5B4FE8;
 }
 
 .character-label::before {
     content: '';
     position: absolute;
-    top: -8px;
+    top: -12px;
     left: 50%;
     transform: translateX(-50%);
     width: 0;
     height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid white;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 12px solid #5B4FE8;
 }
 
 /* Позиции персонажей - размещаем в разных частях парка */
