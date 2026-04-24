@@ -252,6 +252,18 @@
     gap: 12px;
 }
 
+/* Название урока внизу карточки */
+.lesson-title {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    padding-top: 8px;
+    border-top: 2px solid #E0E0E0;
+    margin-top: 8px;
+}
+
 /* Верхняя часть карточки с иконкой, названием и прогрессом */
 .tree-exercise-header {
     display: flex;

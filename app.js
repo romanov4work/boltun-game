@@ -310,6 +310,38 @@ function initSpeechRecognition() {
     }
 }
 
+// Добавить название урока в карточку
+function addLessonTitle(cardElement, exerciseId) {
+    // Проверяем, не добавлено ли уже
+    if (cardElement.querySelector('.lesson-title')) return;
+
+    let lessonText = '';
+    if (exerciseId === 'tongue-twisters') {
+        lessonText = `Скороговорка "${tongueTwisters[0].text}"`;
+    } else if (exerciseId === 'emotions') {
+        lessonText = `Эмоция "${emotions[0].phrase}"`;
+    } else if (exerciseId === 'sounds') {
+        lessonText = 'Звук "Р"';
+    } else if (exerciseId === 'breathing') {
+        lessonText = 'Дыхательное упражнение';
+    } else if (exerciseId === 'speed-reading') {
+        lessonText = 'Быстрое чтение';
+    } else if (exerciseId === 'hard-words') {
+        lessonText = 'Сложное слово';
+    } else if (exerciseId === 'articulation') {
+        lessonText = 'Артикуляционная гимнастика';
+    } else if (exerciseId === 'pencil-challenge') {
+        lessonText = 'С карандашом во рту';
+    } else if (exerciseId === 'retelling') {
+        lessonText = 'Пересказ истории';
+    }
+
+    const lessonDiv = document.createElement('div');
+    lessonDiv.className = 'lesson-title';
+    lessonDiv.textContent = `1 урок. ${lessonText}`;
+    cardElement.appendChild(lessonDiv);
+}
+
 // Настройка обработчиков событий
 function setupEventListeners() {
     console.log('Setting up event listeners...');
@@ -321,6 +353,9 @@ function setupEventListeners() {
     exerciseCards.forEach(card => {
         const exerciseId = card.dataset.exercise;
         if (exerciseId) {
+            // Добавляем название урока в низ карточки
+            addLessonTitle(card, exerciseId);
+
             card.addEventListener('click', () => {
                 console.log('Card clicked:', exerciseId);
                 startExercise(exerciseId, 0);
