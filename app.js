@@ -173,10 +173,14 @@ function isExerciseCompleted(exerciseId) {
 
 // Генерация плиток уроков для модуля
 function generateLessonTiles(cardElement, exerciseId) {
+    console.log('Generating lesson for:', exerciseId);
+
     // Оборачиваем существующие элементы в header
     const icon = cardElement.querySelector('.tree-exercise-icon');
     const name = cardElement.querySelector('.tree-exercise-name');
     const progress = cardElement.querySelector('.tree-exercise-progress');
+
+    console.log('Found elements:', { icon, name, progress });
 
     if (icon && name && progress) {
         const header = document.createElement('div');
@@ -189,6 +193,7 @@ function generateLessonTiles(cardElement, exerciseId) {
 
         // Вставляем header в начало карточки
         cardElement.insertBefore(header, cardElement.firstChild);
+        console.log('Header created');
     }
 
     // Показываем только первый урок

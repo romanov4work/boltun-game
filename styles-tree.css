@@ -275,16 +275,9 @@
     text-align: left;
 }
 
-/* Прогресс упражнения */
+/* Прогресс упражнения - скрываем */
 .tree-exercise-progress {
-    font-size: 16px;
-    font-weight: 700;
-    color: #FF6B6B;
-    background: white;
-    padding: 8px 16px;
-    border-radius: 12px;
-    border: 2px solid #FF6B6B;
-    flex-shrink: 0;
+    display: none;
 }
 
 /* Сетка уроков внутри модуля - показываем всегда */
