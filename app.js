@@ -159,12 +159,8 @@ function updateTreeUI() {
 
 // Проверка разблокировано ли упражнение
 function isExerciseUnlocked(exerciseId, index) {
-    // Первое упражнение всегда открыто
-    if (index === 0) return true;
-
-    // Остальные открываются после завершения предыдущего
-    const prevExerciseId = treeExercises[index - 1];
-    return isExerciseCompleted(prevExerciseId);
+    // Все упражнения всегда открыты
+    return true;
 }
 
 // Проверка завершено ли упражнение
