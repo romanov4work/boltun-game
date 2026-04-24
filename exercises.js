@@ -1,24 +1,24 @@
-// === УПРАЖНЕНИЕ "ЗВУКИ" (объединяет Р, Л, Ш, Ж) ===
+// === УПРАЖНЕНИЕ "ЗВУКИ" (объединяет Р, Л, Ш, Ж) - 40 слов ===
 
 const soundsData = [
     {
         sound: "Р",
-        words: ["Рыба", "Рак", "Роза", "Ракета", "Радуга", "Рука", "Река", "Рысь", "Корова", "Ворона", "Морковь", "Барабан", "Карандаш", "Тигр", "Ветер"],
+        words: ["Рыба", "Рак", "Роза", "Ракета", "Радуга", "Рука", "Река", "Рысь", "Корова", "Ворона", "Морковь", "Барабан", "Карандаш", "Тигр", "Ветер", "Рубашка", "Ромашка", "Рыбак", "Рынок", "Рюкзак"],
         color: "#FF6B6B"
     },
     {
         sound: "Л",
-        words: ["Лампа", "Лук", "Луна", "Лиса", "Лодка", "Лес", "Лето", "Молоко", "Белка", "Стол", "Стул", "Пол"],
+        words: ["Лампа", "Лук", "Луна", "Лиса", "Лодка", "Лес", "Лето", "Молоко", "Белка", "Стол", "Стул", "Пол", "Лапа", "Лыжи", "Ложка", "Лошадь", "Лимон", "Лист", "Лужа", "Лягушка"],
         color: "#4CAF50"
     },
     {
         sound: "Ш",
-        words: ["Шар", "Шапка", "Шуба", "Школа", "Мышка", "Кошка", "Малыш", "Карандаш", "Шишка"],
+        words: ["Шар", "Шапка", "Шуба", "Школа", "Мышка", "Кошка", "Малыш", "Карандаш", "Шишка", "Шкаф", "Шарф", "Шина", "Шутка", "Шахматы", "Шоколад", "Штаны", "Шея", "Шум", "Шаг", "Шалаш"],
         color: "#2196F3"
     },
     {
         sound: "Ж",
-        words: ["Жук", "Жаба", "Жираф", "Ножик", "Ёжик", "Лыжи", "Пижама", "Медвежонок"],
+        words: ["Жук", "Жаба", "Жираф", "Ножик", "Ёжик", "Лыжи", "Пижама", "Медвежонок", "Жара", "Жизнь", "Журнал", "Жёлудь", "Жемчуг", "Жюри", "Ужин", "Лужа", "Кожа", "Ножницы", "Пирожок", "Снежок"],
         color: "#FF9800"
     }
 ];
@@ -68,6 +68,7 @@ function handleSoundResult(transcript) {
 
     const points = hasSound ? 50 : 20;
     score += points;
+    incrementExerciseProgress('sounds');
     updateScore();
 
     const title = hasSound ? '🎉 Отлично!' : '💪 Попробуй еще!';
@@ -185,6 +186,7 @@ function startBreathing() {
             counter.textContent = '';
             box.className = 'breathing-box';
             score += 50;
+    incrementExerciseProgress("breathing");
             updateScore();
             setTimeout(() => {
                 document.getElementById('result-panel-breathing').classList.remove('hidden');
@@ -264,6 +266,7 @@ function stopRecordingEmotions() {
 }
 
 function handleEmotionResult(transcript) {
+    incrementExerciseProgress("emotions");
     const points = 60;
     score += points;
     updateScore();
@@ -282,14 +285,24 @@ function nextEmotion() {
     loadEmotion();
 }
 
-// === УПРАЖНЕНИЕ "С КАРАНДАШОМ" ===
+// === УПРАЖНЕНИЕ "С КАРАНДАШОМ" - 15 фраз ===
 
 const pencilPhrases = [
     "Карл у Клары украл кораллы",
     "Шла Саша по шоссе",
     "На дворе трава, на траве дрова",
     "Ехал Грека через реку",
-    "От топота копыт пыль по полю летит"
+    "От топота копыт пыль по полю летит",
+    "Белый снег, белый мел",
+    "Мама мыла Милу мылом",
+    "Водовоз вез воду",
+    "Ткет ткач ткани",
+    "Осип охрип, Архип осип",
+    "Везет Сенька Саньку",
+    "Шесть мышат шуршат",
+    "Цапля чахла, цапля сохла",
+    "Король-орел, орел-король",
+    "Бык тупогуб"
 ];
 
 function loadPencilPhrase() {
@@ -326,6 +339,7 @@ function stopRecordingPencil() {
 function handlePencilResult(transcript) {
     const points = 70;
     score += points;
+    incrementExerciseProgress('pencil-challenge');
     updateScore();
 
     document.getElementById('result-title-pencil').textContent = '🖊️ Отлично!';
@@ -342,7 +356,7 @@ function nextPencilPhrase() {
     loadPencilPhrase();
 }
 
-// === УПРАЖНЕНИЕ "СЛОЖНЫЕ СЛОВА" ===
+// === УПРАЖНЕНИЕ "СЛОЖНЫЕ СЛОВА" - 20 слов ===
 
 const hardWords = [
     { word: "Достопримечательность", hint: "До-сто-при-ме-ча-тель-ность" },
@@ -351,7 +365,20 @@ const hardWords = [
     { word: "Электричество", hint: "Э-лек-три-че-ство" },
     { word: "Путешествие", hint: "Пу-те-ше-ствие" },
     { word: "Приключение", hint: "При-клю-че-ние" },
-    { word: "Воспитатель", hint: "Вос-пи-та-тель" }
+    { word: "Воспитатель", hint: "Вос-пи-та-тель" },
+    { word: "Землетрясение", hint: "Зем-ле-тря-се-ние" },
+    { word: "Водопроводчик", hint: "Во-до-про-вод-чик" },
+    { word: "Благодарность", hint: "Бла-го-дар-ность" },
+    { word: "Велосипедист", hint: "Ве-ло-си-пе-дист" },
+    { word: "Достижение", hint: "До-сти-же-ние" },
+    { word: "Замечательный", hint: "За-ме-ча-тель-ный" },
+    { word: "Изобретатель", hint: "И-зо-бре-та-тель" },
+    { word: "Колокольчик", hint: "Ко-ло-коль-чик" },
+    { word: "Любознательный", hint: "Лю-бо-зна-тель-ный" },
+    { word: "Мороженщик", hint: "Мо-ро-жен-щик" },
+    { word: "Необыкновенный", hint: "Не-о-быч-но-вен-ный" },
+    { word: "Ответственность", hint: "От-вет-ствен-ность" },
+    { word: "Путешественник", hint: "Пу-те-ше-ствен-ник" }
 ];
 
 function loadHardWord() {
@@ -389,6 +416,7 @@ function stopRecordingWords() {
 function handleWordResult(transcript) {
     const points = 80;
     score += points;
+    incrementExerciseProgress('hard-words');
     updateScore();
 
     document.getElementById('result-title-words').textContent = '📚 Отлично!';
@@ -443,6 +471,7 @@ function startArticulation() {
             timer.textContent = '';
             demo.querySelector('.demo-face').textContent = '🎉';
             score += 40;
+            incrementExerciseProgress('articulation');
             updateScore();
             setTimeout(() => {
                 document.getElementById('result-panel-articulation').classList.remove('hidden');
@@ -652,6 +681,7 @@ async function startVoiceoverRecording() {
 
             // Показываем результат
             score += 100;
+            incrementExerciseProgress('cartoon-voiceover');
             updateScore();
             document.getElementById('result-title-cartoon').textContent = '🎬 Отлично!';
             document.getElementById('result-message-cartoon').textContent = 'Ты озвучил мультик! Посмотри что получилось.';
@@ -766,6 +796,7 @@ function handleSpeedResult(transcript) {
 
     const points = 70;
     score += points;
+    incrementExerciseProgress('speed-reading');
     updateScore();
 
     document.getElementById('result-title-speed').textContent = '⚡ Отлично!';
@@ -870,6 +901,7 @@ function stopRetell() {
 function handleRetellResult(transcript) {
     const points = 120;
     score += points;
+    incrementExerciseProgress('retelling');
     updateScore();
 
     document.getElementById('result-title-retell').textContent = '📖 Отлично!';

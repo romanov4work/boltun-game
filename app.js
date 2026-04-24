@@ -1,5 +1,5 @@
 // Глобальные переменные
-let score = 0;
+let score = 1000; // Начальные баллы
 let currentExercise = null;
 let recognition = null;
 let startTime = 0;
@@ -13,34 +13,92 @@ let currentPencilIndex = 0;
 let currentWordIndex = 0;
 let currentArticulationIndex = 0;
 
+// Прогресс по упражнениям (сколько заданий выполнено)
+let exerciseProgress = {
+    'tongue-twisters': 0,
+    'sounds': 0,
+    'breathing': 0,
+    'emotions': 0,
+    'speed-reading': 0,
+    'hard-words': 0,
+    'articulation': 0,
+    'pencil-challenge': 0,
+    'cartoon-voiceover': 0,
+    'retelling': 0
+};
+
+// Загружаем прогресс из localStorage
+function loadProgress() {
+    const savedScore = localStorage.getItem('boltun_score');
+    const savedProgress = localStorage.getItem('boltun_progress');
+
+    if (savedScore) {
+        score = parseInt(savedScore);
+    }
+
+    if (savedProgress) {
+        exerciseProgress = JSON.parse(savedProgress);
+    }
+}
+
+// Сохраняем прогресс в localStorage
+function saveProgress() {
+    localStorage.setItem('boltun_score', score);
+    localStorage.setItem('boltun_progress', JSON.stringify(exerciseProgress));
+}
+
 // Слова со звуком Р
 const rWords = [
     "Рыба", "Рак", "Роза", "Ракета", "Радуга", "Рука", "Река", "Рысь",
     "Корова", "Ворона", "Морковь", "Барабан", "Карандаш", "Тигр", "Ветер"
 ];
 
-// Эмоции и фразы
+// Эмоции и фразы (15 штук)
 const emotions = [
     { emotion: "😊 Радость", phrase: "Какой прекрасный день!", emoji: "😊" },
     { emotion: "😢 Грусть", phrase: "Мне очень грустно", emoji: "😢" },
     { emotion: "😠 Злость", phrase: "Я очень сердит!", emoji: "😠" },
     { emotion: "😱 Удивление", phrase: "Вот это да!", emoji: "😱" },
-    { emotion: "😴 Усталость", phrase: "Я так устал", emoji: "😴" }
+    { emotion: "😴 Усталость", phrase: "Я так устал", emoji: "😴" },
+    { emotion: "😊 Восторг", phrase: "Это просто замечательно!", emoji: "😊" },
+    { emotion: "😢 Обида", phrase: "Почему ты так поступил?", emoji: "😢" },
+    { emotion: "😠 Возмущение", phrase: "Это несправедливо!", emoji: "😠" },
+    { emotion: "😱 Испуг", phrase: "Ой, как страшно!", emoji: "😱" },
+    { emotion: "😴 Скука", phrase: "Мне так скучно", emoji: "😴" },
+    { emotion: "😊 Нежность", phrase: "Я тебя люблю", emoji: "😊" },
+    { emotion: "😢 Жалость", phrase: "Бедный котенок", emoji: "😢" },
+    { emotion: "😠 Раздражение", phrase: "Хватит шуметь!", emoji: "😠" },
+    { emotion: "😱 Восхищение", phrase: "Как красиво!", emoji: "😱" },
+    { emotion: "😴 Мечтательность", phrase: "Как бы хорошо было", emoji: "😴" }
 ];
 
-// Скороговорки разной сложности
+// Скороговорки разной сложности (20 штук)
 const tongueTwisters = [
     { text: "Карл у Клары украл кораллы", target: 3.0, difficulty: 1 },
     { text: "Шла Саша по шоссе и сосала сушку", target: 3.5, difficulty: 1 },
     { text: "На дворе трава, на траве дрова", target: 2.5, difficulty: 1 },
+    { text: "Белый снег, белый мел, белый заяц тоже бел", target: 3.0, difficulty: 1 },
     { text: "Ехал Грека через реку, видит Грека в реке рак", target: 4.0, difficulty: 2 },
     { text: "Корабли лавировали, лавировали, да не вылавировали", target: 4.5, difficulty: 2 },
     { text: "От топота копыт пыль по полю летит", target: 3.0, difficulty: 2 },
-    { text: "Расскажите про покупки, про какие про покупки, про покупки, про покупки, про покупочки мои", target: 5.0, difficulty: 3 }
+    { text: "Четыре черненьких чумазых чертенка чертили черными чернилами чертеж", target: 5.0, difficulty: 3 },
+    { text: "Расскажите про покупки, про какие про покупки, про покупки, про покупки, про покупочки мои", target: 5.0, difficulty: 3 },
+    { text: "Съел молодец тридцать три пирога с пирогом, да все с творогом", target: 4.0, difficulty: 2 },
+    { text: "Бык тупогуб, тупогубенький бычок, у быка бела губа была тупа", target: 4.5, difficulty: 3 },
+    { text: "Ткет ткач ткани на платки Тане", target: 3.0, difficulty: 2 },
+    { text: "Водовоз вез воду из водопровода", target: 3.5, difficulty: 2 },
+    { text: "Сшит колпак не по-колпаковски, надо колпак переколпаковать", target: 4.5, difficulty: 3 },
+    { text: "Мама мыла Милу мылом, Мила мыло не любила", target: 3.5, difficulty: 1 },
+    { text: "Осип охрип, Архип осип", target: 2.5, difficulty: 1 },
+    { text: "Везет Сенька Саньку с Сонькой на санках", target: 3.5, difficulty: 2 },
+    { text: "Шесть мышат в камышах шуршат", target: 3.0, difficulty: 2 },
+    { text: "Цапля чахла, цапля сохла, цапля сдохла", target: 3.0, difficulty: 2 },
+    { text: "Король-орел, орел-король", target: 2.5, difficulty: 1 }
 ];
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
+    loadProgress();
     setupEventListeners();
     updateScore();
     updateLevelsUI();
@@ -76,6 +134,52 @@ function updateLevelsUI() {
             }
         }
     });
+
+    // Обновляем счетчики заданий
+    updateExerciseCounters();
+}
+
+// Обновление счетчиков выполненных заданий
+function updateExerciseCounters() {
+    Object.keys(exerciseProgress).forEach(exerciseId => {
+        const btn = document.querySelector(`[data-exercise="${exerciseId}"]`);
+        if (btn) {
+            let counter = btn.querySelector('.exercise-counter');
+            if (!counter) {
+                counter = document.createElement('div');
+                counter.className = 'exercise-counter';
+                btn.appendChild(counter);
+            }
+            const total = getExerciseTotal(exerciseId);
+            counter.textContent = `${exerciseProgress[exerciseId]}/${total}`;
+        }
+    });
+}
+
+// Получить общее количество заданий в упражнении
+function getExerciseTotal(exerciseId) {
+    const totals = {
+        'tongue-twisters': 20,
+        'sounds': 40,
+        'breathing': 5,
+        'emotions': 15,
+        'speed-reading': 15,
+        'hard-words': 20,
+        'articulation': 10,
+        'pencil-challenge': 15,
+        'cartoon-voiceover': 10,
+        'retelling': 10
+    };
+    return totals[exerciseId] || 10;
+}
+
+// Увеличить прогресс упражнения
+function incrementExerciseProgress(exerciseId) {
+    if (exerciseProgress[exerciseId] !== undefined) {
+        exerciseProgress[exerciseId]++;
+        saveProgress();
+        updateExerciseCounters();
+    }
 }
 
 // Настройка распознавания речи
@@ -322,7 +426,12 @@ function handleSpeechResult(transcript) {
     // Начисление баллов
     const earnedPoints = Math.max(10, totalScore);
     score += earnedPoints;
+
+    // Увеличиваем прогресс упражнения
+    incrementExerciseProgress('tongue-twisters');
+
     updateScore();
+    saveProgress();
 
     // Показ результата
     showResult(elapsed, twister.target, earnedPoints, similarity);

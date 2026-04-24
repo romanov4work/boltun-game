@@ -15,7 +15,9 @@
       "Bash(node -e \"const fs = require\\('fs'\\); const content = fs.readFileSync\\('app.js', 'utf8'\\); const lines = content.split\\('\\\\\\\\n'\\); console.log\\('Line 350-365:'\\); lines.slice\\(349, 365\\).forEach\\(\\(line, i\\) => console.log\\(\\(350+i\\) + ': ' + line\\)\\);\")",
       "Bash(node -c app.js)",
       "Bash(unzip -l \"Стили иллюстраций для хакактона.zip\")",
-      "Bash(unzip -o \"UI Kit Uchi.ru 1 – 4.zip\" -d ui-kit-extracted)"
+      "Bash(unzip -o \"UI Kit Uchi.ru 1 – 4.zip\" -d ui-kit-extracted)",
+      "Bash(sed -i 's/score += 50;/score += 50;\\\\n    incrementExerciseProgress\\(\"breathing\"\\);/g' exercises.js)",
+      "Bash(sed -i 's/handleEmotionResult\\(transcript\\) {/handleEmotionResult\\(transcript\\) {\\\\n    incrementExerciseProgress\\(\"emotions\"\\);/g' exercises.js)"
     ]
   }
 }

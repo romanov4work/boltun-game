@@ -177,6 +177,17 @@
     text-align: center;
 }
 
+.exercise-counter {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #FF6B6B;
+    background: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    border: 2px solid #FF6B6B;
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
     .levels-header h1 {
