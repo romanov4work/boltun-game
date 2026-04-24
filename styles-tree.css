@@ -2,7 +2,7 @@
 .tree-screen {
     width: 100vw;
     min-height: 100vh;
-    padding: 100px 20px 40px;
+    padding: 40px 20px;
     overflow-y: auto;
     position: relative;
     z-index: 10;
@@ -11,26 +11,46 @@
     background: url('RoomFox.png') center/cover no-repeat fixed;
 }
 
+/* Дополнительные облака */
+.tree-screen::before {
+    content: '☁️';
+    position: absolute;
+    top: 15%;
+    right: 20%;
+    font-size: 65px;
+    animation: cloudFloat3 50s ease-in-out infinite;
+    opacity: 0.75;
+    z-index: 1;
+}
+
+@keyframes cloudFloat3 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-60px, -25px); }
+}
+
+.tree-screen::after {
+    content: '☁️';
+    position: absolute;
+    top: 40%;
+    left: 10%;
+    font-size: 60px;
+    animation: cloudFloat4 60s ease-in-out infinite;
+    opacity: 0.7;
+    z-index: 1;
+}
+
+@keyframes cloudFloat4 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(90px, 20px); }
+}
+
+/* Header - скрываем */
 .tree-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(135deg, #5B4FE8 0%, #7B68EE 100%);
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 100;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: none;
 }
 
 .tree-title {
-    font-size: 32px;
-    font-weight: 900;
-    color: white;
-    text-align: center;
-    margin: 0;
+    display: none;
 }
 
 /* Контейнер дерева */
@@ -43,6 +63,31 @@
     flex-direction: column;
     gap: 20px;
     min-height: auto;
+}
+
+/* Главный заголовок "Дикция" */
+.main-title {
+    font-size: 72px;
+    font-weight: 900;
+    color: white;
+    text-align: center;
+    text-shadow:
+        3px 3px 0px #87CEEB,
+        6px 6px 0px #B0E0E6,
+        9px 9px 0px #ADD8E6,
+        0 0 20px rgba(255, 255, 255, 0.8),
+        0 0 40px rgba(135, 206, 235, 0.6);
+    font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+    letter-spacing: 4px;
+    margin: 20px 0 30px 0;
+    z-index: 20;
+    position: relative;
+    animation: cloudTitle 3s ease-in-out infinite;
+}
+
+@keyframes cloudTitle {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
 }
 
 /* Ствол дерева - скрываем */

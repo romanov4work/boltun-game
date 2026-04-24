@@ -16,32 +16,35 @@ body {
 }
 
 body::before {
-    content: '☁️ ☁️ ☁️ ☁️ ☁️ ☁️ ☁️ ☁️ ☁️ ☁️';
+    content: '☁️';
     position: absolute;
-    top: 5%;
-    left: 0;
-    width: 200%;
-    font-size: 60px;
-    animation: clouds 40s linear infinite;
+    top: 8%;
+    left: 15%;
+    font-size: 70px;
+    animation: cloudFloat1 45s ease-in-out infinite;
+    opacity: 0.8;
+    z-index: 1;
+}
+
+@keyframes cloudFloat1 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(100px, -20px); }
+}
+
+body::after {
+    content: '☁️';
+    position: absolute;
+    top: 25%;
+    left: 60%;
+    font-size: 55px;
+    animation: cloudFloat2 55s ease-in-out infinite;
     opacity: 0.7;
     z-index: 1;
 }
 
-@keyframes clouds {
-    from { transform: translateX(-50%); }
-    to { transform: translateX(0%); }
-}
-
-body::after {
-    content: '☁️ ☁️ ☁️ ☁️ ☁️ ☁️ ☁️';
-    position: absolute;
-    top: 20%;
-    left: 0;
-    width: 200%;
-    font-size: 50px;
-    animation: clouds 50s linear infinite;
-    opacity: 0.6;
-    z-index: 1;
+@keyframes cloudFloat2 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-80px, 15px); }
 }
 
 @keyframes sunshine {
