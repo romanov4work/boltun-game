@@ -133,6 +133,57 @@
     gap: 20px;
 }
 
+/* Разные цвета для каждого модуля */
+.tree-node:nth-child(2) .tree-exercise-card {
+    background: linear-gradient(135deg, #FFE5E5 0%, #FFD1D1 100%);
+    border-color: #FF6B6B;
+}
+
+.tree-node:nth-child(3) .tree-exercise-card {
+    background: linear-gradient(135deg, #FFF4E5 0%, #FFE8CC 100%);
+    border-color: #FFA726;
+}
+
+.tree-node:nth-child(4) .tree-exercise-card {
+    background: linear-gradient(135deg, #FFFDE7 0%, #FFF9C4 100%);
+    border-color: #FFEB3B;
+}
+
+.tree-node:nth-child(5) .tree-exercise-card {
+    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+    border-color: #66BB6A;
+}
+
+.tree-node:nth-child(6) .tree-exercise-card {
+    background: linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%);
+    border-color: #26C6DA;
+}
+
+.tree-node:nth-child(7) .tree-exercise-card {
+    background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+    border-color: #42A5F5;
+}
+
+.tree-node:nth-child(8) .tree-exercise-card {
+    background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
+    border-color: #AB47BC;
+}
+
+.tree-node:nth-child(9) .tree-exercise-card {
+    background: linear-gradient(135deg, #FCE4EC 0%, #F8BBD0 100%);
+    border-color: #EC407A;
+}
+
+.tree-node:nth-child(10) .tree-exercise-card {
+    background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+    border-color: #FF9800;
+}
+
+.tree-node:nth-child(11) .tree-exercise-card {
+    background: linear-gradient(135deg, #E8EAF6 0%, #C5CAE9 100%);
+    border-color: #5C6BC0;
+}
+
 /* Иконка упражнения */
 .tree-exercise-icon {
     font-size: 48px;
