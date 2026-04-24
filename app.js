@@ -338,9 +338,9 @@ function setupEventListeners() {
     document.getElementById('back-to-menu-retell').addEventListener('click', () => showScreen('menu-screen'));
 
     // Скороговорки
-    document.getElementById('start-recording').addEventListener('click', startRecording);
-    document.getElementById('stop-recording').addEventListener('click', stopRecording);
-    document.getElementById('next-exercise').addEventListener('click', nextTwister);
+    document.getElementById('start-recording').addEventListener('click', () => startRecording());
+    document.getElementById('stop-recording').addEventListener('click', () => stopRecording());
+    document.getElementById('next-exercise').addEventListener('click', () => nextTwister());
 
     // Звуки
     document.getElementById('start-recording-sounds').addEventListener('click', startRecordingSounds);
