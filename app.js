@@ -299,7 +299,16 @@ function initSpeechRecognition() {
         recognition.onerror = (event) => {
             console.error('Ошибка распознавания:', event.error);
             stopRecording();
-            alert('Ошибка распознавания речи. Попробуй еще раз!');
+
+            if (event.error === 'not-allowed' || event.error === 'permission-denied') {
+                alert('Нужен доступ к микрофону! Разреши доступ в настройках браузера.');
+            } else if (event.error === 'no-speech') {
+                alert('Не слышу голоса. Говори громче!');
+            } else if (event.error === 'network') {
+                alert('Проблема с интернетом. Проверь подключение.');
+            } else {
+                alert('Ошибка распознавания речи. Попробуй еще раз!');
+            }
         };
 
         recognition.onend = () => {
@@ -591,8 +600,13 @@ function loadArticulation() {
 // Начало записи
 function startRecording() {
     if (!recognition) {
-        alert('Распознавание речи недоступно');
-        return;
+        console.log('Recognition not initialized, initializing now...');
+        initSpeechRecognition();
+
+        if (!recognition) {
+            alert('Распознавание речи недоступно. Убедись, что разрешил доступ к микрофону.');
+            return;
+        }
     }
 
     document.getElementById('start-recording').classList.add('hidden');
@@ -608,7 +622,13 @@ function startRecording() {
     character.style.filter = 'drop-shadow(0 8px 16px rgba(123, 104, 238, 0.4))';
 
     // Запуск распознавания
-    recognition.start();
+    try {
+        recognition.start();
+    } catch (error) {
+        console.error('Error starting recognition:', error);
+        stopRecording();
+        alert('Ошибка запуска распознавания. Попробуй еще раз!');
+    }
 }
 
 // Остановка записи
