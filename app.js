@@ -543,7 +543,7 @@ function loadTwister() {
     document.getElementById('current-twister').textContent = twister.text;
     document.getElementById('timer').textContent = '0.0';
     document.getElementById('result-panel').classList.add('hidden');
-    document.getElementById('start-recording').classList.remove('hidden');
+    document.getElementById('start-recording').classList.add('hidden'); // Скрываем пока озвучивается
     document.getElementById('stop-recording').classList.add('hidden');
 
     // Анимация персонажа
@@ -557,7 +557,23 @@ function loadTwister() {
         utterance.lang = 'ru-RU';
         utterance.rate = 0.85;
         utterance.pitch = 1.1;
+
+        // Показываем кнопку только после окончания озвучки
+        utterance.onend = () => {
+            console.log('Speech synthesis finished, showing start button');
+            document.getElementById('start-recording').classList.remove('hidden');
+        };
+
+        utterance.onerror = (event) => {
+            console.error('Speech synthesis error:', event);
+            // Показываем кнопку даже если ошибка
+            document.getElementById('start-recording').classList.remove('hidden');
+        };
+
         window.speechSynthesis.speak(utterance);
+    } else {
+        // Если озвучка недоступна, показываем кнопку сразу
+        document.getElementById('start-recording').classList.remove('hidden');
     }
 }
 
@@ -620,6 +636,12 @@ function loadArticulation() {
 function startRecording() {
     console.log('startRecording() called');
     console.log('recognition object:', recognition);
+
+    // Останавливаем озвучку если она еще идет
+    if ('speechSynthesis' in window && window.speechSynthesis.speaking) {
+        console.log('Stopping speech synthesis before starting recognition');
+        window.speechSynthesis.cancel();
+    }
 
     if (!recognition) {
         console.log('Recognition not initialized, initializing now...');
