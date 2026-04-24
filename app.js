@@ -43,9 +43,40 @@ const tongueTwisters = [
 document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     updateScore();
+    updateLevelsUI();
     setupOnboarding();
     setupControls();
 });
+
+// Обновление UI уровней
+function updateLevelsUI() {
+    // Обновляем прогресс бар
+    const progress = getProgressToNextLevel();
+    const progressFill = document.getElementById('level-progress');
+    if (progressFill) {
+        progressFill.style.width = progress + '%';
+    }
+
+    const currentLevel = getCurrentLevel();
+    const progressText = document.getElementById('progress-text');
+    if (progressText) {
+        progressText.textContent = `Уровень ${currentLevel.id}: ${currentLevel.name}`;
+    }
+
+    // Обновляем доступность уровней
+    levels.forEach(level => {
+        const levelCard = document.getElementById(`level-${level.id}`);
+        if (levelCard) {
+            if (isLevelUnlocked(level.id)) {
+                levelCard.classList.remove('locked');
+                levelCard.classList.add('unlocked');
+            } else {
+                levelCard.classList.add('locked');
+                levelCard.classList.remove('unlocked');
+            }
+        }
+    });
+}
 
 // Настройка распознавания речи
 function initSpeechRecognition() {
@@ -78,7 +109,7 @@ function initSpeechRecognition() {
 // Настройка обработчиков событий
 function setupEventListeners() {
     // Кнопки выбора упражнений
-    document.querySelectorAll('.character-button').forEach(button => {
+    document.querySelectorAll('.exercise-btn').forEach(button => {
         button.addEventListener('click', (e) => {
             const exercise = e.currentTarget.dataset.exercise;
             startExercise(exercise);
@@ -87,6 +118,7 @@ function setupEventListeners() {
 
     // Кнопки "Назад"
     document.getElementById('back-to-menu').addEventListener('click', () => showScreen('menu-screen'));
+    document.getElementById('back-to-menu-sounds').addEventListener('click', () => showScreen('menu-screen'));
     document.getElementById('back-to-menu-r').addEventListener('click', () => showScreen('menu-screen'));
     document.getElementById('back-to-menu-breathing').addEventListener('click', () => showScreen('menu-screen'));
     document.getElementById('back-to-menu-emotions').addEventListener('click', () => showScreen('menu-screen'));
@@ -101,6 +133,11 @@ function setupEventListeners() {
     document.getElementById('start-recording').addEventListener('click', startRecording);
     document.getElementById('stop-recording').addEventListener('click', stopRecording);
     document.getElementById('next-exercise').addEventListener('click', nextTwister);
+
+    // Звуки
+    document.getElementById('start-recording-sounds').addEventListener('click', startRecordingSounds);
+    document.getElementById('stop-recording-sounds').addEventListener('click', stopRecordingSounds);
+    document.getElementById('next-sound').addEventListener('click', nextSound);
 
     // Звук Р
     document.getElementById('start-recording-r').addEventListener('click', startRecordingR);
@@ -152,6 +189,7 @@ function setupEventListeners() {
 function showScreen(screenId) {
     document.getElementById('menu-screen').classList.toggle('hidden', screenId !== 'menu-screen');
     document.getElementById('tongue-twisters-screen').classList.toggle('hidden', screenId !== 'tongue-twisters-screen');
+    document.getElementById('sounds-screen').classList.toggle('hidden', screenId !== 'sounds-screen');
     document.getElementById('sound-r-screen').classList.toggle('hidden', screenId !== 'sound-r-screen');
     document.getElementById('breathing-screen').classList.toggle('hidden', screenId !== 'breathing-screen');
     document.getElementById('emotions-screen').classList.toggle('hidden', screenId !== 'emotions-screen');
@@ -171,6 +209,9 @@ function startExercise(exerciseType) {
         currentTwisterIndex = 0;
         showScreen('tongue-twisters-screen');
         loadTwister();
+    } else if (exerciseType === 'sounds') {
+        showScreen('sounds-screen');
+        resetSounds();
     } else if (exerciseType === 'sound-r') {
         currentRWordIndex = 0;
         showScreen('sound-r-screen');
@@ -350,6 +391,7 @@ function nextTwister() {
 // Обновление счета
 function updateScore() {
     document.getElementById('score').textContent = score;
+    updateLevelsUI();
 }
 
 // Онбординг

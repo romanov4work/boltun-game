@@ -223,6 +223,20 @@
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
+/* Звуки */
+.sound-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    color: white;
+    padding: 16px 40px;
+    border-radius: 30px;
+    font-size: 48px;
+    font-weight: 900;
+    margin: 24px 0;
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+    border: 4px solid white;
+}
+
 /* Пересказ */
 .retell-text {
     font-size: 18px;

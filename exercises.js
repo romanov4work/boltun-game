@@ -1,4 +1,103 @@
-// === УПРАЖНЕНИЕ "ЗВУК Р" ===
+// === УПРАЖНЕНИЕ "ЗВУКИ" (объединяет Р, Л, Ш, Ж) ===
+
+const soundsData = [
+    {
+        sound: "Р",
+        words: ["Рыба", "Рак", "Роза", "Ракета", "Радуга", "Рука", "Река", "Рысь", "Корова", "Ворона", "Морковь", "Барабан", "Карандаш", "Тигр", "Ветер"],
+        color: "#FF6B6B"
+    },
+    {
+        sound: "Л",
+        words: ["Лампа", "Лук", "Луна", "Лиса", "Лодка", "Лес", "Лето", "Молоко", "Белка", "Стол", "Стул", "Пол"],
+        color: "#4CAF50"
+    },
+    {
+        sound: "Ш",
+        words: ["Шар", "Шапка", "Шуба", "Школа", "Мышка", "Кошка", "Малыш", "Карандаш", "Шишка"],
+        color: "#2196F3"
+    },
+    {
+        sound: "Ж",
+        words: ["Жук", "Жаба", "Жираф", "Ножик", "Ёжик", "Лыжи", "Пижама", "Медвежонок"],
+        color: "#FF9800"
+    }
+];
+
+let currentSoundIndex = 0;
+let currentSoundWordIndex = 0;
+
+function loadSound() {
+    const soundData = soundsData[currentSoundIndex];
+    const word = soundData.words[currentSoundWordIndex];
+
+    document.getElementById('current-sound').textContent = soundData.sound;
+    document.getElementById('current-sound').style.color = soundData.color;
+    document.getElementById('current-sound-word').textContent = word;
+    document.getElementById('result-panel-sounds').classList.add('hidden');
+    document.getElementById('start-recording-sounds').classList.remove('hidden');
+    document.getElementById('stop-recording-sounds').classList.add('hidden');
+
+    const character = document.getElementById('character-sounds');
+    character.style.backgroundImage = "url('assets/characters/character3.png')";
+}
+
+function startRecordingSounds() {
+    if (!recognition) return;
+
+    document.getElementById('start-recording-sounds').classList.add('hidden');
+    document.getElementById('stop-recording-sounds').classList.remove('hidden');
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.toLowerCase().trim();
+        handleSoundResult(transcript);
+    };
+
+    recognition.start();
+}
+
+function stopRecordingSounds() {
+    document.getElementById('start-recording-sounds').classList.remove('hidden');
+    document.getElementById('stop-recording-sounds').classList.add('hidden');
+    if (recognition) recognition.stop();
+}
+
+function handleSoundResult(transcript) {
+    const soundData = soundsData[currentSoundIndex];
+    const word = soundData.words[currentSoundWordIndex].toLowerCase();
+    const hasSound = transcript.includes(soundData.sound.toLowerCase()) || transcript.includes(word);
+
+    const points = hasSound ? 50 : 20;
+    score += points;
+    updateScore();
+
+    const title = hasSound ? '🎉 Отлично!' : '💪 Попробуй еще!';
+    const message = hasSound ? `Ты четко произнес звук ${soundData.sound}!` : 'Продолжай тренироваться!';
+
+    document.getElementById('result-title-sounds').textContent = title;
+    document.getElementById('result-message-sounds').textContent = message;
+    document.getElementById('earned-points-sounds').textContent = '+' + points;
+    document.getElementById('result-panel-sounds').classList.remove('hidden');
+}
+
+function nextSound() {
+    currentSoundWordIndex++;
+    if (currentSoundWordIndex >= soundsData[currentSoundIndex].words.length) {
+        currentSoundWordIndex = 0;
+        currentSoundIndex++;
+        if (currentSoundIndex >= soundsData.length) {
+            currentSoundIndex = 0;
+        }
+    }
+    loadSound();
+}
+
+function resetSounds() {
+    currentSoundIndex = 0;
+    currentSoundWordIndex = 0;
+    loadSound();
+}
+
+// === УПРАЖНЕНИЕ "ЗВУК Р" (старое, оставляем для совместимости) ===
 
 function loadRWord() {
     const word = rWords[currentRWordIndex];

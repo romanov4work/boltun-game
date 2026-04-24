@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styles-onboarding.css">
     <link rel="stylesheet" href="styles-exercises.css">
+    <link rel="stylesheet" href="styles-levels.css">
 </head>
 <body>
     <!-- Онбординг -->
@@ -52,57 +53,95 @@
         <span class="score-value" id="score">0</span>
     </div>
 
-    <!-- Экран выбора упражнений - парк с персонажами -->
-    <div class="park-scene" id="menu-screen">
-        <button class="character-button character-1" data-exercise="tongue-twisters">
-            <div class="character-sprite emoji-character">🦊</div>
-            <div class="character-label">Скороговорки</div>
-        </button>
+    <!-- Экран выбора уровней -->
+    <div class="levels-screen" id="menu-screen">
+        <div class="levels-header">
+            <h1>🎤 Болтун</h1>
+            <p class="subtitle">Развивай дикцию играя!</p>
+        </div>
 
-        <button class="character-button character-2" data-exercise="emotions">
-            <div class="character-sprite emoji-character">🐱</div>
-            <div class="character-label">Эмоции</div>
-        </button>
+        <div class="progress-bar-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="level-progress"></div>
+            </div>
+            <p class="progress-text" id="progress-text">Уровень 1: Основы</p>
+        </div>
 
-        <button class="character-button character-3" data-exercise="sound-r">
-            <div class="character-sprite emoji-character">🐯</div>
-            <div class="character-label">Звук Р</div>
-        </button>
+        <div class="levels-container">
+            <!-- Уровень 1: Основы -->
+            <div class="level-card unlocked" id="level-1">
+                <div class="level-header">
+                    <span class="level-number">1</span>
+                    <h2>Основы</h2>
+                </div>
+                <div class="exercises-grid">
+                    <button class="exercise-btn" data-exercise="tongue-twisters">
+                        <span class="exercise-icon">🗣️</span>
+                        <span class="exercise-name">Скороговорки</span>
+                    </button>
+                    <button class="exercise-btn" data-exercise="sounds">
+                        <span class="exercise-icon">🔤</span>
+                        <span class="exercise-name">Звуки</span>
+                    </button>
+                    <button class="exercise-btn" data-exercise="breathing">
+                        <span class="exercise-icon">💨</span>
+                        <span class="exercise-name">Дыхание</span>
+                    </button>
+                </div>
+            </div>
 
-        <button class="character-button character-4" data-exercise="breathing">
-            <div class="character-sprite emoji-character">🐰</div>
-            <div class="character-label">Дыхание</div>
-        </button>
+            <!-- Уровень 2: Выразительность -->
+            <div class="level-card locked" id="level-2">
+                <div class="level-header">
+                    <span class="level-number">2</span>
+                    <h2>Выразительность</h2>
+                    <span class="lock-icon">🔒</span>
+                </div>
+                <p class="unlock-text">Набери 300 баллов</p>
+                <div class="exercises-grid">
+                    <button class="exercise-btn" data-exercise="emotions">
+                        <span class="exercise-icon">🎭</span>
+                        <span class="exercise-name">Эмоции</span>
+                    </button>
+                    <button class="exercise-btn" data-exercise="speed-reading">
+                        <span class="exercise-icon">⚡</span>
+                        <span class="exercise-name">Темп речи</span>
+                    </button>
+                    <button class="exercise-btn" data-exercise="hard-words">
+                        <span class="exercise-icon">📚</span>
+                        <span class="exercise-name">Сложные слова</span>
+                    </button>
+                </div>
+            </div>
 
-        <button class="character-button character-5" data-exercise="pencil-challenge">
-            <div class="character-sprite emoji-character">🐶</div>
-            <div class="character-label">С карандашом</div>
-        </button>
-
-        <button class="character-button character-6" data-exercise="hard-words">
-            <div class="character-sprite emoji-character">🐻</div>
-            <div class="character-label">Сложные слова</div>
-        </button>
-
-        <button class="character-button character-7" data-exercise="articulation">
-            <div class="character-sprite emoji-character">🐼</div>
-            <div class="character-label">Артикуляция</div>
-        </button>
-
-        <button class="character-button character-8" data-exercise="cartoon-voiceover">
-            <div class="character-sprite emoji-character">🦁</div>
-            <div class="character-label">Озвучка мультика</div>
-        </button>
-
-        <button class="character-button character-9" data-exercise="speed-reading">
-            <div class="character-sprite emoji-character">🐨</div>
-            <div class="character-label">Скорость чтения</div>
-        </button>
-
-        <button class="character-button character-10" data-exercise="retelling">
-            <div class="character-sprite emoji-character">🐸</div>
-            <div class="character-label">Пересказ</div>
-        </button>
+            <!-- Уровень 3: Мастерство -->
+            <div class="level-card locked" id="level-3">
+                <div class="level-header">
+                    <span class="level-number">3</span>
+                    <h2>Мастерство</h2>
+                    <span class="lock-icon">🔒</span>
+                </div>
+                <p class="unlock-text">Набери 700 баллов</p>
+                <div class="exercises-grid">
+                    <button class="exercise-btn" data-exercise="articulation">
+                        <span class="exercise-icon">👅</span>
+                        <span class="exercise-name">Артикуляция</span>
+                    </button>
+                    <button class="exercise-btn" data-exercise="pencil-challenge">
+                        <span class="exercise-icon">🖊️</span>
+                        <span class="exercise-name">С препятствиями</span>
+                    </button>
+                    <button class="exercise-btn" data-exercise="cartoon-voiceover">
+                        <span class="exercise-icon">🎬</span>
+                        <span class="exercise-name">Озвучка</span>
+                    </button>
+                    <button class="exercise-btn" data-exercise="retelling">
+                        <span class="exercise-icon">📖</span>
+                        <span class="exercise-name">Пересказ</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Экран упражнения -->
@@ -158,7 +197,48 @@
         </div>
     </div>
 
-    <!-- Экран упражнения "Звук Р" -->
+    <!-- Экран упражнения "Звуки" -->
+    <div class="exercise-screen hidden" id="sounds-screen">
+        <button class="back-btn" id="back-to-menu-sounds">← Назад</button>
+        <div class="exercise-container">
+            <div class="exercise-content">
+                <div class="character-container">
+                    <div class="character" id="character-sounds"></div>
+                </div>
+
+                <div class="task-card">
+                    <h3>🔤 Произнеси звук:</h3>
+                    <div class="sound-badge" id="current-sound"></div>
+                    <p class="tongue-twister-text" id="current-sound-word"></p>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-primary" id="start-recording-sounds">
+                        🎤 Начать
+                    </button>
+                    <button class="btn btn-secondary hidden" id="stop-recording-sounds">
+                        ⏹️ Стоп
+                    </button>
+                </div>
+
+                <div class="result-panel hidden" id="result-panel-sounds">
+                    <h3 id="result-title-sounds"></h3>
+                    <p id="result-message-sounds"></p>
+                    <div class="result-stats">
+                        <div class="stat">
+                            <span class="stat-label">Баллы:</span>
+                            <span class="stat-value" id="earned-points-sounds"></span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="next-sound">
+                        Следующее слово
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран упражнения "Звук Р" (старый) -->
     <div class="exercise-screen hidden" id="sound-r-screen">
         <button class="back-btn" id="back-to-menu-r">← Назад в парк</button>
         <div class="exercise-container">
@@ -556,6 +636,7 @@
         </div>
     </div>
 
+    <script src="levels.js"></script>
     <script src="exercises.js"></script>
     <script src="app.js"></script>
 </body>
