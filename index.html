@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Болтун - Игра для развития дикции</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles-onboarding.css">
+    <link rel="stylesheet" href="styles-exercises.css">
+</head>
+<body>
+    <!-- Онбординг -->
+    <div class="onboarding hidden" id="onboarding">
+        <button class="close-onboarding" id="close-onboarding">✕</button>
+        <div class="onboarding-content">
+            <div class="onboarding-character">
+                <img src="assets/characters/feya.png" alt="Фея">
+            </div>
+            <h2>Привет! Я помогу тебе развить дикцию! 🎤</h2>
+            <p>Для игры нужно разрешить доступ к микрофону и включить звук</p>
+            <div class="onboarding-permissions">
+                <div class="permission-item">
+                    <div class="permission-icon">🎤</div>
+                    <div class="permission-text">Микрофон</div>
+                </div>
+                <div class="permission-item">
+                    <div class="permission-icon">🔊</div>
+                    <div class="permission-text">Звук</div>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-large" id="start-game">Начать игру!</button>
+            <button class="btn-skip" id="skip-onboarding">Пропустить (для тестирования)</button>
+        </div>
+    </div>
+
+    <!-- Кнопки управления -->
+    <div class="controls-panel">
+        <button class="control-btn" id="sound-toggle" title="Звук">
+            <span class="control-icon">🔊</span>
+        </button>
+        <button class="control-btn" id="fullscreen-toggle" title="Полноэкранный режим">
+            <span class="control-icon">⛶</span>
+        </button>
+        <button class="control-btn" id="rate-game" title="Оценить игру">
+            <span class="control-icon">⭐</span>
+        </button>
+    </div>
+
+    <!-- Счет в углу -->
+    <div class="score-badge">
+        <span class="score-label">⭐</span>
+        <span class="score-value" id="score">0</span>
+    </div>
+
+    <!-- Экран выбора упражнений - парк с персонажами -->
+    <div class="park-scene" id="menu-screen">
+        <button class="character-button character-1" data-exercise="tongue-twisters">
+            <div class="character-sprite" style="background-image: url('assets/characters/feya.png');"></div>
+            <div class="character-label">Скороговорки</div>
+        </button>
+
+        <button class="character-button character-2" data-exercise="emotions">
+            <div class="character-sprite" style="background-image: url('assets/characters/character2.png');"></div>
+            <div class="character-label">Эмоции</div>
+        </button>
+
+        <button class="character-button character-3" data-exercise="sound-r">
+            <div class="character-sprite" style="background-image: url('assets/characters/feya.png');"></div>
+            <div class="character-label">Звук Р</div>
+        </button>
+
+        <button class="character-button character-4" data-exercise="breathing">
+            <div class="character-sprite" style="background-image: url('assets/characters/character2.png');"></div>
+            <div class="character-label">Дыхание</div>
+        </button>
+
+        <button class="character-button character-5" data-exercise="pencil-challenge">
+            <div class="character-sprite" style="background-image: url('assets/characters/feya.png');"></div>
+            <div class="character-label">С карандашом</div>
+        </button>
+
+        <button class="character-button character-6" data-exercise="hard-words">
+            <div class="character-sprite" style="background-image: url('assets/characters/character2.png');"></div>
+            <div class="character-label">Сложные слова</div>
+        </button>
+
+        <button class="character-button character-7" data-exercise="articulation">
+            <div class="character-sprite" style="background-image: url('assets/characters/feya.png');"></div>
+            <div class="character-label">Артикуляция</div>
+        </button>
+    </div>
+
+    <!-- Экран упражнения -->
+    <div class="exercise-screen hidden" id="tongue-twisters-screen">
+        <button class="back-btn" id="back-to-menu">← Назад в парк</button>
+        <div class="exercise-container">
+            <div class="exercise-content">
+                <div class="character-container">
+                    <div class="character" id="character"></div>
+                </div>
+
+                <div class="task-card">
+                    <h3>Повтори скороговорку:</h3>
+                    <p class="tongue-twister-text" id="current-twister"></p>
+                    <div class="timer-container">
+                        <span>Время:</span>
+                        <span class="timer" id="timer">0.0</span>
+                        <span>сек</span>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-primary" id="start-recording">
+                        🎤 Начать
+                    </button>
+                    <button class="btn btn-secondary hidden" id="stop-recording">
+                        ⏹️ Стоп
+                    </button>
+                </div>
+
+                <div class="result-panel hidden" id="result-panel">
+                    <h3 id="result-title"></h3>
+                    <p id="result-message"></p>
+                    <div class="result-stats">
+                        <div class="stat">
+                            <span class="stat-label">Твое время:</span>
+                            <span class="stat-value" id="user-time"></span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Цель:</span>
+                            <span class="stat-value" id="target-time"></span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Баллы:</span>
+                            <span class="stat-value" id="earned-points"></span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="next-exercise">
+                        Следующее упражнение
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран упражнения "Звук Р" -->
+    <div class="exercise-screen hidden" id="sound-r-screen">
+        <button class="back-btn" id="back-to-menu-r">← Назад в парк</button>
+        <div class="exercise-container">
+            <div class="exercise-content">
+                <div class="character-container">
+                    <div class="character" id="character-r"></div>
+                </div>
+
+                <div class="task-card">
+                    <h3>Произнеси слово со звуком Р:</h3>
+                    <p class="tongue-twister-text" id="current-r-word"></p>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-primary" id="start-recording-r">
+                        🎤 Начать
+                    </button>
+                    <button class="btn btn-secondary hidden" id="stop-recording-r">
+                        ⏹️ Стоп
+                    </button>
+                </div>
+
+                <div class="result-panel hidden" id="result-panel-r">
+                    <h3 id="result-title-r"></h3>
+                    <p id="result-message-r"></p>
+                    <div class="result-stats">
+                        <div class="stat">
+                            <span class="stat-label">Баллы:</span>
+                            <span class="stat-value" id="earned-points-r"></span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="next-r-word">
+                        Следующее слово
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран упражнения "Дыхание" -->
+    <div class="exercise-screen hidden" id="breathing-screen">
+        <button class="back-btn" id="back-to-menu-breathing">← Назад в парк</button>
+        <div class="exercise-container">
+            <div class="exercise-content">
+                <div class="character-container">
+                    <div class="character breathing-character" id="character-breathing"></div>
+                </div>
+
+                <div class="task-card">
+                    <h3>Дыхательная гимнастика</h3>
+                    <p class="breathing-instruction" id="breathing-instruction">Приготовься...</p>
+                    <div class="breath-counter" id="breath-counter"></div>
+                    <div class="breathing-box-container">
+                        <div class="breathing-box" id="breathing-box">
+                            <div class="box-timer"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-primary" id="start-breathing">
+                        💨 Начать упражнение
+                    </button>
+                </div>
+
+                <div class="result-panel hidden" id="result-panel-breathing">
+                    <h3>Отлично! 🌟</h3>
+                    <p>Ты выполнил дыхательное упражнение!</p>
+                    <div class="result-stats">
+                        <div class="stat">
+                            <span class="stat-label">Баллы:</span>
+                            <span class="stat-value">+50</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="repeat-breathing">
+                        Повторить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран упражнения "Эмоции" -->
+    <div class="exercise-screen hidden" id="emotions-screen">
+        <button class="back-btn" id="back-to-menu-emotions">← Назад в парк</button>
+        <div class="exercise-container">
+            <div class="exercise-content">
+                <div class="character-container">
+                    <div class="character" id="character-emotions"></div>
+                </div>
+
+                <div class="task-card">
+                    <h3>Прочитай фразу с эмоцией:</h3>
+                    <div class="emotion-badge" id="current-emotion"></div>
+                    <p class="tongue-twister-text" id="current-emotion-phrase"></p>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-primary" id="start-recording-emotions">
+                        🎤 Начать
+                    </button>
+                    <button class="btn btn-secondary hidden" id="stop-recording-emotions">
+                        ⏹️ Стоп
+                    </button>
+                </div>
+
+                <div class="result-panel hidden" id="result-panel-emotions">
+                    <h3 id="result-title-emotions"></h3>
+                    <p id="result-message-emotions"></p>
+                    <div class="result-stats">
+                        <div class="stat">
+                            <span class="stat-label">Баллы:</span>
+                            <span class="stat-value" id="earned-points-emotions"></span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="next-emotion">
+                        Следующая эмоция
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно оценки -->
+    <div class="modal hidden" id="rating-modal">
+        <div class="modal-content">
+            <h3>Оцени игру! ⭐</h3>
+            <p>Как тебе игра "Болтун"?</p>
+            <div class="rating-stars">
+                <button class="star-btn" data-rating="1">⭐</button>
+                <button class="star-btn" data-rating="2">⭐</button>
+                <button class="star-btn" data-rating="3">⭐</button>
+                <button class="star-btn" data-rating="4">⭐</button>
+                <button class="star-btn" data-rating="5">⭐</button>
+            </div>
+            <button class="btn btn-secondary" id="close-rating">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Экран "С карандашом" -->
+    <div class="exercise-screen hidden" id="pencil-challenge-screen">
+        <button class="back-btn" id="back-to-menu-pencil">← Назад в парк</button>
+        <div class="exercise-container">
+            <div class="exercise-content">
+                <div class="character-container">
+                    <div class="character" id="character-pencil"></div>
+                </div>
+
+                <div class="task-card">
+                    <h3>🖊️ Скажи фразу с карандашом во рту!</h3>
+                    <p class="instruction-text">Положи карандаш между зубами и четко произнеси фразу</p>
+                    <p class="tongue-twister-text" id="current-pencil-phrase"></p>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-primary" id="start-recording-pencil">
+                        🎤 Начать
+                    </button>
+                    <button class="btn btn-secondary hidden" id="stop-recording-pencil">
+                        ⏹️ Стоп
+                    </button>
+                </div>
+
+                <div class="result-panel hidden" id="result-panel-pencil">
+                    <h3 id="result-title-pencil"></h3>
+                    <p id="result-message-pencil"></p>
+                    <div class="result-stats">
+                        <div class="stat">
+                            <span class="stat-label">Баллы:</span>
+                            <span class="stat-value" id="earned-points-pencil"></span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="next-pencil">
+                        Следующая фраза
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран "Сложные слова" -->
+    <div class="exercise-screen hidden" id="hard-words-screen">
+        <button class="back-btn" id="back-to-menu-words">← Назад в парк</button>
+        <div class="exercise-container">
+            <div class="exercise-content">
+                <div class="character-container">
+                    <div class="character" id="character-words"></div>
+                </div>
+
+                <div class="task-card">
+                    <h3>📚 Прочитай сложное слово:</h3>
+                    <p class="hard-word-text" id="current-hard-word"></p>
+                    <p class="word-hint" id="word-hint"></p>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-primary" id="start-recording-words">
+                        🎤 Прочитать
+                    </button>
+                    <button class="btn btn-secondary hidden" id="stop-recording-words">
+                        ⏹️ Стоп
+                    </button>
+                </div>
+
+                <div class="result-panel hidden" id="result-panel-words">
+                    <h3 id="result-title-words"></h3>
+                    <p id="result-message-words"></p>
+                    <div class="result-stats">
+                        <div class="stat">
+                            <span class="stat-label">Баллы:</span>
+                            <span class="stat-value" id="earned-points-words"></span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="next-word">
+                        Следующее слово
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экран "Артикуляционная гимнастика" -->
+    <div class="exercise-screen hidden" id="articulation-screen">
+        <button class="back-btn" id="back-to-menu-articulation">← Назад в парк</button>
+        <div class="exercise-container">
+            <div class="exercise-content">
+                <div class="character-container">
+                    <div class="character" id="character-articulation"></div>
+                </div>
+
+                <div class="task-card">
+                    <h3>👅 Артикуляционная гимнастика</h3>
+                    <div class="articulation-demo" id="articulation-demo">
+                        <div class="demo-face">😊</div>
+                    </div>
+                    <p class="articulation-instruction" id="articulation-instruction"></p>
+                    <div class="articulation-timer" id="articulation-timer"></div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-primary" id="start-articulation">
+                        ▶️ Начать упражнение
+                    </button>
+                </div>
+
+                <div class="result-panel hidden" id="result-panel-articulation">
+                    <h3>Отлично! 🌟</h3>
+                    <p>Ты выполнил артикуляционную гимнастику!</p>
+                    <div class="result-stats">
+                        <div class="stat">
+                            <span class="stat-label">Баллы:</span>
+                            <span class="stat-value">+40</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="repeat-articulation">
+                        Повторить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="exercises.js"></script>
+</body>
+</html>

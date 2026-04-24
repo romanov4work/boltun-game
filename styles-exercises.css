@@ -1,0 +1,167 @@
+/* Стили для новых упражнений */
+
+/* Дыхательное упражнение */
+.breathing-character {
+    animation: breathe 4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.breathing-instruction {
+    font-size: 28px;
+    font-weight: 700;
+    color: #7B68EE;
+    text-align: center;
+    margin: 24px 0 16px;
+}
+
+.breath-counter {
+    font-size: 18px;
+    font-weight: 600;
+    color: #666;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.breathing-box-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 0;
+    perspective: 1000px;
+}
+
+.breathing-box {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.breathing-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 24px;
+    border: 4px solid transparent;
+    transition: all 4s linear;
+}
+
+/* Анимация таймера по граням */
+.breathing-box.inhale::before {
+    border-top-color: #FFD700;
+    animation: timerTop 4s linear;
+}
+
+.breathing-box.hold-in::before {
+    border-top-color: #FFD700;
+    border-right-color: #FFD700;
+    animation: timerRight 4s linear;
+}
+
+.breathing-box.exhale::before {
+    border-top-color: #FFD700;
+    border-right-color: #FFD700;
+    border-bottom-color: #FFD700;
+    animation: timerBottom 4s linear;
+}
+
+.breathing-box.hold-out::before {
+    border-color: #FFD700;
+    animation: timerLeft 4s linear;
+}
+
+@keyframes timerTop {
+    from { border-top-color: transparent; }
+    to { border-top-color: #FFD700; }
+}
+
+@keyframes timerRight {
+    from { border-right-color: transparent; }
+    to { border-right-color: #FFD700; }
+}
+
+@keyframes timerBottom {
+    from { border-bottom-color: transparent; }
+    to { border-bottom-color: #FFD700; }
+}
+
+@keyframes timerLeft {
+    from { border-left-color: transparent; }
+    to { border-left-color: #FFD700; }
+}
+
+/* Увеличение/уменьшение кубика */
+.breathing-box.inhale {
+    transform: scale(1.3);
+    box-shadow: 0 15px 60px rgba(102, 126, 234, 0.6);
+}
+
+.breathing-box.hold-in {
+    transform: scale(1.3);
+    box-shadow: 0 15px 60px rgba(102, 126, 234, 0.6);
+}
+
+.breathing-box.exhale {
+    transform: scale(1);
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+}
+
+.breathing-box.hold-out {
+    transform: scale(1);
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+}
+
+/* Счетчик внутри кубика */
+.box-timer {
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Эмоции */
+.emotion-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: white;
+    padding: 12px 32px;
+    border-radius: 24px;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 16px 0;
+    box-shadow: 0 4px 12px rgba(255, 165, 0, 0.3);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .breathing-circle {
+        width: 120px;
+        height: 120px;
+    }
+
+    .breathing-instruction {
+        font-size: 20px;
+    }
+
+    .emotion-badge {
+        font-size: 24px;
+        padding: 10px 24px;
+    }
+}

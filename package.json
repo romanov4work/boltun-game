@@ -1,0 +1,12 @@
+{
+  "name": "boltun-game",
+  "version": "1.0.0",
+  "description": "Обучающая игра для развития дикции у детей 6-11 лет",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000 || python3 -m http.server 8000"
+  },
+  "keywords": ["education", "kids", "speech", "diction"],
+  "author": "",
+  "license": "MIT"
+}
