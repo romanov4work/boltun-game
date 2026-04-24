@@ -124,14 +124,6 @@ function updateTreeUI() {
         }
     });
 
-    // Генерируем плитки уроков для всех модулей
-    treeExercises.forEach((exerciseId) => {
-        const card = document.querySelector(`[data-exercise="${exerciseId}"]`);
-        if (card && !card.querySelector('.lessons-grid')) {
-            generateLessonTiles(card, exerciseId);
-        }
-    });
-
     // Определяем какие упражнения разблокированы
     treeExercises.forEach((exerciseId, index) => {
         const card = document.querySelector(`[data-exercise="${exerciseId}"]`);
@@ -266,9 +258,38 @@ function initSpeechRecognition() {
 function setupEventListeners() {
     console.log('Setting up event listeners...');
 
-    // Кнопки выбора упражнений на дереве - убираем раскрытие, оставляем только для информации
+    // Кнопки выбора упражнений на дереве
     const exerciseCards = document.querySelectorAll('.tree-exercise-card');
     console.log('Found exercise cards:', exerciseCards.length);
+
+    exerciseCards.forEach(button => {
+        button.addEventListener('click', (e) => {
+            console.log('Exercise card clicked:', e.currentTarget.dataset.exercise);
+            const exercise = e.currentTarget.dataset.exercise;
+            const index = treeExercises.indexOf(exercise);
+
+            // Проверяем разблокировано ли упражнение
+            if (isExerciseUnlocked(exercise, index)) {
+                // Раскрываем/сворачиваем модуль
+                const isExpanded = e.currentTarget.classList.contains('expanded');
+
+                // Сворачиваем все другие модули
+                document.querySelectorAll('.tree-exercise-card').forEach(card => {
+                    card.classList.remove('expanded');
+                });
+
+                if (!isExpanded) {
+                    e.currentTarget.classList.add('expanded');
+                    // Генерируем плитки уроков если их еще нет
+                    if (!e.currentTarget.querySelector('.lessons-grid')) {
+                        generateLessonTiles(e.currentTarget, exercise);
+                    }
+                }
+            } else {
+                alert('Сначала нужно завершить предыдущее упражнение! 🌟');
+            }
+        });
+    });
 
     // Специальная кнопка для озвучки мультфильма
     const cartoonBtn = document.getElementById('cartoon-voiceover-btn');
