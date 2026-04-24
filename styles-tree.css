@@ -247,19 +247,51 @@
     position: relative;
     z-index: 10;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Верхняя часть карточки с иконкой, названием и прогрессом */
+.tree-exercise-header {
+    display: flex;
     align-items: center;
     gap: 20px;
+    width: 100%;
 }
 
-/* Сетка уроков внутри модуля */
+/* Иконка упражнения */
+.tree-exercise-icon {
+    font-size: 48px;
+    flex-shrink: 0;
+}
+
+/* Название упражнения */
+.tree-exercise-name {
+    font-size: 24px;
+    font-weight: 800;
+    color: #5B4FE8;
+    flex: 1;
+    text-align: left;
+}
+
+/* Прогресс упражнения */
+.tree-exercise-progress {
+    font-size: 16px;
+    font-weight: 700;
+    color: #FF6B6B;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 12px;
+    border: 2px solid #FF6B6B;
+    flex-shrink: 0;
+}
+
+/* Сетка уроков внутри модуля - показываем всегда */
 .lessons-grid {
-    display: none;
+    display: block;
     width: 100%;
     margin-top: 12px;
-}
-
-.tree-exercise-card.expanded .lessons-grid {
-    display: block;
 }
 
 .lesson-tile {
@@ -349,33 +381,6 @@
 .tree-node:nth-child(11) .tree-exercise-card {
     background: linear-gradient(135deg, #E8EAF6 0%, #C5CAE9 100%);
     border-color: #5C6BC0;
-}
-
-/* Иконка упражнения */
-.tree-exercise-icon {
-    font-size: 48px;
-    flex-shrink: 0;
-}
-
-/* Название упражнения */
-.tree-exercise-name {
-    font-size: 24px;
-    font-weight: 800;
-    color: #5B4FE8;
-    flex: 1;
-    text-align: left;
-}
-
-/* Прогресс упражнения */
-.tree-exercise-progress {
-    font-size: 16px;
-    font-weight: 700;
-    color: #FF6B6B;
-    background: white;
-    padding: 8px 16px;
-    border-radius: 12px;
-    border: 2px solid #FF6B6B;
-    flex-shrink: 0;
 }
 
 /* Статус упражнения */
