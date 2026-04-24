@@ -50,7 +50,7 @@
 
 /* Контейнер дерева */
 .tree-container {
-    max-width: 900px;
+    max-width: 600px;
     margin: 0 auto;
     position: relative;
     padding: 40px 0;
@@ -65,114 +65,52 @@
     left: 50%;
     top: 0;
     bottom: 0;
-    width: 120px;
+    width: 400px;
     background:
         repeating-linear-gradient(
             90deg,
             #8B4513 0px,
-            #A0522D 8px,
-            #8B4513 16px,
-            #654321 24px,
-            #8B4513 32px
+            #A0522D 12px,
+            #8B4513 24px,
+            #654321 36px,
+            #8B4513 48px
         ),
         linear-gradient(180deg, #6B3410 0%, #8B4513 50%, #654321 100%);
     transform: translateX(-50%);
-    border-radius: 60px;
+    border-radius: 80px;
     box-shadow:
-        inset -8px 0 20px rgba(0, 0, 0, 0.4),
-        inset 8px 0 20px rgba(139, 69, 19, 0.3),
-        0 0 40px rgba(139, 69, 19, 0.5);
+        inset -12px 0 30px rgba(0, 0, 0, 0.5),
+        inset 12px 0 30px rgba(139, 69, 19, 0.4),
+        0 0 50px rgba(139, 69, 19, 0.6);
 }
 
 /* Узел дерева (упражнение) */
 .tree-node {
     position: relative;
-    margin: 60px 0;
+    margin: 40px 0;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10;
 }
 
-.tree-node:nth-child(even) {
-    flex-direction: row-reverse;
-}
-
-/* Ветка с текстурой дерева */
+/* Ветка - скрываем */
 .tree-branch {
-    position: absolute;
-    width: 350px;
-    height: 25px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 5;
+    display: none;
 }
 
-.tree-branch::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background:
-        linear-gradient(90deg, #8B4513 0%, #A0522D 30%, #8B4513 60%, transparent 100%);
-    border-radius: 12px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-}
-
-.tree-branch::after {
-    content: '';
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: radial-gradient(circle, #8B4513 0%, #654321 100%);
-    border-radius: 50%;
-    top: 50%;
-    transform: translateY(-50%);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.tree-node:nth-child(odd) .tree-branch {
-    left: 50%;
-}
-
-.tree-node:nth-child(odd) .tree-branch::after {
-    left: -10px;
-}
-
-.tree-node:nth-child(even) .tree-branch {
-    right: 50%;
-}
-
-.tree-node:nth-child(even) .tree-branch::before {
-    background: linear-gradient(270deg, #8B4513 0%, #A0522D 30%, #8B4513 60%, transparent 100%);
-}
-
-.tree-node:nth-child(even) .tree-branch::after {
-    right: -10px;
-}
-
-/* Карточка упражнения на дереве */
+/* Карточка упражнения внутри ствола */
 .tree-exercise-card {
-    width: 280px;
+    width: 320px;
     background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
     border-radius: 24px;
-    padding: 24px;
+    padding: 20px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     transition: all 0.3s ease;
     border: 4px solid #4CAF50;
-    position: absolute;
+    position: relative;
     z-index: 10;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.tree-node:nth-child(odd) .tree-exercise-card {
-    left: calc(50% + 200px);
-}
-
-.tree-node:nth-child(even) .tree-exercise-card {
-    right: calc(50% + 200px);
 }
 
 .tree-exercise-card.locked {
@@ -240,7 +178,7 @@
     background: linear-gradient(135deg, #BDBDBD 0%, #9E9E9E 100%);
 }
 
-/* Листья на ветках */
+/* Листья вокруг дерева */
 .tree-leaves {
     position: absolute;
     font-size: 40px;
@@ -255,24 +193,16 @@
     50% { transform: rotate(8deg) scale(1.1); }
 }
 
-/* Размещение листьев на ветках */
-.tree-node:nth-child(odd) .tree-leaves {
-    left: calc(50% + 120px);
-}
-
-.tree-node:nth-child(even) .tree-leaves {
-    right: calc(50% + 120px);
-}
-
-.tree-node:nth-child(1) .tree-leaves { top: -25px; }
-.tree-node:nth-child(2) .tree-leaves { top: -25px; }
-.tree-node:nth-child(3) .tree-leaves { top: -30px; }
-.tree-node:nth-child(4) .tree-leaves { top: -30px; }
-.tree-node:nth-child(5) .tree-leaves { top: -25px; }
-.tree-node:nth-child(6) .tree-leaves { top: -25px; }
-.tree-node:nth-child(7) .tree-leaves { top: -30px; }
-.tree-node:nth-child(8) .tree-leaves { top: -30px; }
-.tree-node:nth-child(9) .tree-leaves { top: -25px; }
+/* Размещение листьев вокруг ствола */
+.tree-node:nth-child(1) .tree-leaves { top: -25px; left: -60px; }
+.tree-node:nth-child(2) .tree-leaves { top: -25px; right: -60px; }
+.tree-node:nth-child(3) .tree-leaves { top: -30px; left: -70px; }
+.tree-node:nth-child(4) .tree-leaves { top: -30px; right: -70px; }
+.tree-node:nth-child(5) .tree-leaves { top: -25px; left: -65px; }
+.tree-node:nth-child(6) .tree-leaves { top: -25px; right: -65px; }
+.tree-node:nth-child(7) .tree-leaves { top: -30px; left: -60px; }
+.tree-node:nth-child(8) .tree-leaves { top: -30px; right: -60px; }
+.tree-node:nth-child(9) .tree-leaves { top: -25px; left: -70px; }
 
 /* Дополнительные листья вокруг дерева */
 .tree-container::before {
@@ -318,33 +248,12 @@
     }
 
     .tree-trunk {
-        width: 80px;
+        width: 300px;
     }
 
     .tree-exercise-card {
-        width: 200px;
+        width: 260px;
         padding: 16px;
-    }
-
-    .tree-node:nth-child(odd) .tree-exercise-card {
-        left: calc(50% + 100px);
-    }
-
-    .tree-node:nth-child(even) .tree-exercise-card {
-        right: calc(50% + 100px);
-    }
-
-    .tree-branch {
-        width: 250px;
-        height: 20px;
-    }
-
-    .tree-node:nth-child(odd) .tree-leaves {
-        left: calc(50% + 80px);
-    }
-
-    .tree-node:nth-child(even) .tree-leaves {
-        right: calc(50% + 80px);
     }
 
     .tree-exercise-icon {
