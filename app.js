@@ -106,11 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing...');
     loadProgress();
     setupEventListeners();
-    updateScore();
-    updateTreeUI();
-    setupOnboarding();
-    setupControls();
-    console.log('Initialization complete');
+    setTimeout(() => {
+        updateScore();
+        updateTreeUI();
+        setupOnboarding();
+        setupControls();
+        console.log('Initialization complete');
+    }, 0);
 });
 
 // Обновление UI дерева
