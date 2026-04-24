@@ -115,6 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Обновление UI дерева
 function updateTreeUI() {
+    console.log('updateTreeUI called');
+    console.log('treeExercises:', treeExercises);
+
     // Обновляем счетчики прогресса для каждого упражнения
     Object.keys(exerciseProgress).forEach(exerciseId => {
         const progressEl = document.getElementById(`progress-${exerciseId}`);
@@ -127,8 +130,12 @@ function updateTreeUI() {
     // Генерируем уроки для всех модулей сразу
     treeExercises.forEach((exerciseId) => {
         const card = document.querySelector(`[data-exercise="${exerciseId}"]`);
+        console.log(`Looking for card with data-exercise="${exerciseId}":`, card);
         if (card && !card.querySelector('.lessons-grid')) {
+            console.log('Calling generateLessonTiles for:', exerciseId);
             generateLessonTiles(card, exerciseId);
+        } else if (card) {
+            console.log('Card already has lessons-grid');
         }
     });
 
