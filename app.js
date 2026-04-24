@@ -101,32 +101,6 @@ function showMotivation() {
     }, 10);
 }
 
-// Слова со звуком Р
-const rWords = [
-    "Рыба", "Рак", "Роза", "Ракета", "Радуга", "Рука", "Река", "Рысь",
-    "Корова", "Ворона", "Морковь", "Барабан", "Карандаш", "Тигр", "Ветер"
-];
-
-// Эмоции и фразы (15 штук)
-const emotions = [
-    { emotion: "😊 Радость", phrase: "Какой прекрасный день!", emoji: "😊" },
-    { emotion: "😢 Грусть", phrase: "Мне очень грустно", emoji: "😢" },
-    { emotion: "😠 Злость", phrase: "Я очень сердит!", emoji: "😠" },
-    { emotion: "😱 Удивление", phrase: "Вот это да!", emoji: "😱" },
-    { emotion: "😴 Усталость", phrase: "Я так устал", emoji: "😴" },
-    { emotion: "😊 Восторг", phrase: "Это просто замечательно!", emoji: "😊" },
-    { emotion: "😢 Обида", phrase: "Почему ты так поступил?", emoji: "😢" },
-    { emotion: "😠 Возмущение", phrase: "Это несправедливо!", emoji: "😠" },
-    { emotion: "😱 Испуг", phrase: "Ой, как страшно!", emoji: "😱" },
-    { emotion: "😴 Скука", phrase: "Мне так скучно", emoji: "😴" },
-    { emotion: "😊 Нежность", phrase: "Я тебя люблю", emoji: "😊" },
-    { emotion: "😢 Жалость", phrase: "Бедный котенок", emoji: "😢" },
-    { emotion: "😠 Раздражение", phrase: "Хватит шуметь!", emoji: "😠" },
-    { emotion: "😱 Восхищение", phrase: "Как красиво!", emoji: "😱" },
-    { emotion: "😴 Мечтательность", phrase: "Как бы хорошо было", emoji: "😴" }
-];
-
-// Скороговорки разной сложности (20 штук)
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
     loadProgress();
@@ -207,7 +181,7 @@ function generateLessonTiles(cardElement, exerciseId) {
 
         tile.addEventListener('click', (e) => {
             e.stopPropagation();
-            startExercise(exerciseId);
+            startExercise(exerciseId, i - 1); // Передаем индекс урока (начиная с 0)
         });
 
         lessonsGrid.appendChild(tile);
@@ -403,50 +377,56 @@ function showScreen(screenId) {
 }
 
 // Запуск упражнения
-function startExercise(exerciseType) {
+function startExercise(exerciseType, lessonIndex = 0) {
     currentExercise = exerciseType;
 
     if (exerciseType === 'tongue-twisters') {
-        currentTwisterIndex = 0;
+        currentTwisterIndex = lessonIndex;
         showScreen('tongue-twisters-screen');
         loadTwister();
+        initSpeechRecognition();
     } else if (exerciseType === 'sounds') {
         showScreen('sounds-screen');
         resetSounds();
+        initSpeechRecognition();
     } else if (exerciseType === 'sound-r') {
-        currentRWordIndex = 0;
+        currentRWordIndex = lessonIndex;
         showScreen('sound-r-screen');
         loadRWord();
+        initSpeechRecognition();
     } else if (exerciseType === 'breathing') {
         showScreen('breathing-screen');
         resetBreathing();
     } else if (exerciseType === 'emotions') {
-        currentEmotionIndex = 0;
+        currentEmotionIndex = lessonIndex;
         showScreen('emotions-screen');
         loadEmotion();
+        initSpeechRecognition();
     } else if (exerciseType === 'pencil-challenge') {
-        currentPencilIndex = 0;
+        currentPencilIndex = lessonIndex;
         showScreen('pencil-challenge-screen');
         loadPencilPhrase();
+        initSpeechRecognition();
     } else if (exerciseType === 'hard-words') {
-        currentWordIndex = 0;
+        currentWordIndex = lessonIndex;
         showScreen('hard-words-screen');
-        loadHardWord();
+        loadWord();
+        initSpeechRecognition();
     } else if (exerciseType === 'articulation') {
+        currentArticulationIndex = lessonIndex;
         showScreen('articulation-screen');
-        resetArticulation();
+        loadArticulation();
     } else if (exerciseType === 'cartoon-voiceover') {
         showScreen('cartoon-voiceover-screen');
         resetCartoon();
     } else if (exerciseType === 'speed-reading') {
         showScreen('speed-reading-screen');
         resetSpeedReading();
+        initSpeechRecognition();
     } else if (exerciseType === 'retelling') {
         showScreen('retelling-screen');
-        resetRetell();
-    } else {
-        alert('Это упражнение скоро будет доступно!');
-    }
+        resetRetelling();
+        initSpeechRecognition();
 }
 
 // Загрузка скороговорки
@@ -462,6 +442,61 @@ function loadTwister() {
     const character = document.getElementById('character');
     character.style.backgroundImage = "url('assets/characters/feya.png')";
     character.textContent = '';
+}
+
+// Загрузка слова со звуком Р
+function loadRWord() {
+    const word = rWords[currentRWordIndex];
+    document.getElementById('current-r-word').textContent = word;
+    document.getElementById('result-panel-r').classList.add('hidden');
+}
+
+// Загрузка эмоции
+function loadEmotion() {
+    const emotion = emotions[currentEmotionIndex];
+    document.getElementById('current-emotion').textContent = emotion.emotion;
+    document.getElementById('emotion-phrase').textContent = emotion.phrase;
+    document.getElementById('emotion-emoji').textContent = emotion.emoji;
+    document.getElementById('result-panel-emotions').classList.add('hidden');
+}
+
+// Загрузка фразы с карандашом
+function loadPencilPhrase() {
+    const phrases = tongueTwisters.slice(0, 15);
+    const phrase = phrases[currentPencilIndex];
+    document.getElementById('pencil-phrase').textContent = phrase.text;
+    document.getElementById('result-panel-pencil').classList.add('hidden');
+}
+
+// Загрузка сложного слова
+function loadWord() {
+    const hardWords = [
+        "Достопримечательность", "Фотосинтез", "Электрификация",
+        "Благодарность", "Взаимопонимание", "Предпринимательство",
+        "Ответственность", "Совершенствование", "Последовательность",
+        "Благополучие", "Взаимодействие", "Сопротивление",
+        "Преобразование", "Воспроизведение", "Противопоставление",
+        "Усовершенствование", "Взаимозаменяемость", "Непосредственность",
+        "Самостоятельность", "Продолжительность"
+    ];
+    const word = hardWords[currentWordIndex];
+    document.getElementById('current-hard-word').textContent = word;
+    document.getElementById('result-panel-words').classList.add('hidden');
+}
+
+// Загрузка артикуляционного упражнения
+function loadArticulation() {
+    const exercises = [
+        { name: "Улыбка", description: "Широко улыбнись и удерживай улыбку 10 секунд" },
+        { name: "Трубочка", description: "Вытяни губы трубочкой и удерживай 10 секунд" },
+        { name: "Лопатка", description: "Расслабь язык и положи его на нижнюю губу" },
+        { name: "Иголочка", description: "Сделай язык узким и острым" },
+        { name: "Часики", description: "Двигай языком влево-вправо как маятник" },
+        { name: "Качели", description: "Двигай языком вверх-вниз" }
+    ];
+    const exercise = exercises[currentArticulationIndex];
+    document.getElementById('articulation-name').textContent = exercise.name;
+    document.getElementById('articulation-description').textContent = exercise.description;
 }
 
 // Начало записи
