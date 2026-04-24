@@ -27,10 +27,33 @@ let exerciseProgress = {
     'retelling': 0
 };
 
+// Статистика
+let stats = {
+    today: 0,
+    week: 0,
+    total: 0,
+    lastDate: null
+};
+
+// Мотивационные сообщения
+const motivationMessages = [
+    "Отлично! Продолжай в том же духе! 🌟",
+    "Ты молодец! Так держать! 💪",
+    "Прекрасная работа! 🎉",
+    "Ты делаешь большие успехи! 🚀",
+    "Невероятно! Ты супер! ⭐",
+    "Продолжай, у тебя отлично получается! 🎯",
+    "Ты на правильном пути! 🌈",
+    "Фантастика! Ты справляешься! 🏆",
+    "Браво! Так держать! 👏",
+    "Ты становишься лучше с каждым разом! 💫"
+];
+
 // Загружаем прогресс из localStorage
 function loadProgress() {
     const savedScore = localStorage.getItem('boltun_score');
     const savedProgress = localStorage.getItem('boltun_progress');
+    const savedStats = localStorage.getItem('boltun_stats');
 
     if (savedScore) {
         score = parseInt(savedScore);
@@ -39,12 +62,51 @@ function loadProgress() {
     if (savedProgress) {
         exerciseProgress = JSON.parse(savedProgress);
     }
+
+    if (savedStats) {
+        stats = JSON.parse(savedStats);
+        // Проверяем дату
+        const today = new Date().toDateString();
+        if (stats.lastDate !== today) {
+            stats.today = 0;
+            stats.lastDate = today;
+        }
+    } else {
+        stats.lastDate = new Date().toDateString();
+    }
+
+    updateStats();
 }
 
 // Сохраняем прогресс в localStorage
 function saveProgress() {
     localStorage.setItem('boltun_score', score);
     localStorage.setItem('boltun_progress', JSON.stringify(exerciseProgress));
+    localStorage.setItem('boltun_stats', JSON.stringify(stats));
+}
+
+// Обновление статистики
+function updateStats() {
+    const todayEl = document.getElementById('today-count');
+    const weekEl = document.getElementById('week-count');
+    const totalEl = document.getElementById('total-count');
+
+    if (todayEl) todayEl.textContent = stats.today;
+    if (weekEl) weekEl.textContent = stats.week;
+    if (totalEl) totalEl.textContent = stats.total;
+}
+
+// Показать мотивационное сообщение
+function showMotivation() {
+    const messageEl = document.getElementById('motivation-message');
+    if (!messageEl) return;
+
+    const randomMessage = motivationMessages[Math.floor(Math.random() * motivationMessages.length)];
+    messageEl.textContent = randomMessage;
+    messageEl.style.animation = 'none';
+    setTimeout(() => {
+        messageEl.style.animation = 'motivationPulse 2s ease-in-out infinite';
+    }, 10);
 }
 
 // Слова со звуком Р
@@ -190,8 +252,16 @@ function getExerciseTotal(exerciseId) {
 function incrementExerciseProgress(exerciseId) {
     if (exerciseProgress[exerciseId] !== undefined) {
         exerciseProgress[exerciseId]++;
+
+        // Обновляем статистику
+        stats.today++;
+        stats.week++;
+        stats.total++;
+
         saveProgress();
         updateTreeUI();
+        updateStats();
+        showMotivation();
     }
 }
 

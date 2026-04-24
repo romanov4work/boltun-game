@@ -65,6 +65,44 @@
             <!-- Заголовок "Дикция" -->
             <div class="main-title">Дикция</div>
 
+            <!-- Статистика -->
+            <div class="stats-panel">
+                <div class="stat-item">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Сегодня</div>
+                        <div class="stat-value" id="today-count">0</div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Неделя</div>
+                        <div class="stat-value" id="week-count">0</div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Всего</div>
+                        <div class="stat-value" id="total-count">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Мотивационное сообщение -->
+            <div class="motivation-message" id="motivation-message">
+                Начни свой путь к отличной дикции! 🌟
+            </div>
+
+            <!-- Карта прогресса -->
+            <div class="progress-map">
+                <svg class="progress-path" width="100%" height="100" viewBox="0 0 600 100" preserveAspectRatio="none">
+                    <path d="M 50 50 Q 150 20, 250 50 T 550 50" stroke="#BDBDBD" stroke-width="8" fill="none" stroke-dasharray="10,5"/>
+                    <path id="progress-path-fill" d="M 50 50 Q 150 20, 250 50 T 550 50" stroke="#4CAF50" stroke-width="8" fill="none" stroke-dasharray="0,1000"/>
+                </svg>
+            </div>
+
             <!-- Кнопка озвучки мультфильма -->
             <div class="tree-node">
                 <div class="tree-branch"></div>
